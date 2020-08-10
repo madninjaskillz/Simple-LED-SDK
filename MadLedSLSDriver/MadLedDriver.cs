@@ -82,18 +82,18 @@ namespace MadLedSLSDriver
                         new ControlDevice.LedUnit{ LEDName = "LED 6", Data = new MadLedData{LedNumber=6}},
                         new ControlDevice.LedUnit{ LEDName = "LED 7", Data = new MadLedData{LedNumber=7}},
                         new ControlDevice.LedUnit{ LEDName = "LED 8", Data = new MadLedData{LedNumber=8}},
-                        //new ControlDevice.LedUnit{ LEDName = "LED 9"},
-                        //new ControlDevice.LedUnit{ LEDName = "LED 10"},
-                        //new ControlDevice.LedUnit{ LEDName = "LED 11"},
-                        //new ControlDevice.LedUnit{ LEDName = "LED 12"},
-                        //new ControlDevice.LedUnit{ LEDName = "LED 13"},
-                        //new ControlDevice.LedUnit{ LEDName = "LED 14"},
-                        //new ControlDevice.LedUnit{ LEDName = "LED 15"},
-                        //new ControlDevice.LedUnit{ LEDName = "LED 16"},
-                        //new ControlDevice.LedUnit{ LEDName = "LED 17"},
-                        //new ControlDevice.LedUnit{ LEDName = "LED 18"},
-                        //new ControlDevice.LedUnit{ LEDName = "LED 19"},
-                        //new ControlDevice.LedUnit{ LEDName = "LED 20"},
+                        new ControlDevice.LedUnit{ LEDName = "LED 9", Data = new MadLedData{LedNumber=9}},
+                        new ControlDevice.LedUnit{ LEDName = "LED 10", Data = new MadLedData{LedNumber=10}},
+                        new ControlDevice.LedUnit{ LEDName = "LED 11", Data = new MadLedData{LedNumber=11}},
+                        new ControlDevice.LedUnit{ LEDName = "LED 12", Data = new MadLedData{LedNumber=12}},
+                        new ControlDevice.LedUnit{ LEDName = "LED 13", Data = new MadLedData{LedNumber=13}},
+                        new ControlDevice.LedUnit{ LEDName = "LED 14", Data = new MadLedData{LedNumber=14}},
+                        new ControlDevice.LedUnit{ LEDName = "LED 15", Data = new MadLedData{LedNumber=15}},
+                        new ControlDevice.LedUnit{ LEDName = "LED 16", Data = new MadLedData{LedNumber=16}},
+                        new ControlDevice.LedUnit{ LEDName = "LED 17", Data = new MadLedData{LedNumber=17}},
+                        new ControlDevice.LedUnit{ LEDName = "LED 18", Data = new MadLedData{LedNumber=18}},
+                        new ControlDevice.LedUnit{ LEDName = "LED 19", Data = new MadLedData{LedNumber=19}},
+                        new ControlDevice.LedUnit{ LEDName = "LED 20", Data = new MadLedData{LedNumber=20}},
                     }
                 }
             };
@@ -187,6 +187,11 @@ namespace MadLedSLSDriver
             {
                 SupportsPull = false
             };
+        }
+
+        public void Dispose()
+        {
+            serialDriver?.Dispose();
         }
     }
 }

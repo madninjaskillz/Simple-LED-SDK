@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace MadLedFrameworkSDK
 {
-    public interface ISimpleLEDDriver
+    public interface ISimpleLEDDriver : IDisposable
     {
         void Configure(DriverDetails driverDetails);
         List<ControlDevice> GetDevices();

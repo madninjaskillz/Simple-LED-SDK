@@ -16,20 +16,17 @@ namespace MadLedFrameworkSDK
 
         public void MapLEDs(ControlDevice otherDevice)
         {
-            float ratio = (float)otherDevice.LEDs.Length/LEDs.Length;
-
-            Debug.WriteLine(ratio);
-
-            for (int i = 0; i < LEDs.Length; i++)
+            
+            for (var i = 0; i < LEDs.Length; i++)
             {
-                int index = ((int) Math.Floor(i * ratio));
-                var copyLED = otherDevice.LEDs[index];
+                var doubleIndex1 = (double)i * otherDevice.LEDs.Length / LEDs.Length;
+                var index1 = (int)Math.Floor(doubleIndex1);
+                var rel = doubleIndex1 - index1;
 
-                LEDs[i].Color.Red = copyLED.Color.Red;
-                LEDs[i].Color.Green = copyLED.Color.Green;
-                LEDs[i].Color.Blue = copyLED.Color.Blue;
+                LEDs[i].Color.Red = (int)Math.Round((1.0 - rel) * otherDevice.LEDs[index1].Color.Red + (index1 + 1 < otherDevice.LEDs.Length ? rel * otherDevice.LEDs[index1 + 1].Color.Red : 0));
+                LEDs[i].Color.Green = (int)Math.Round((1.0 - rel) * otherDevice.LEDs[index1].Color.Green + (index1 + 1 < otherDevice.LEDs.Length ? rel * otherDevice.LEDs[index1 + 1].Color.Green : 0));
+                LEDs[i].Color.Blue = (int)Math.Round((1.0 - rel) * otherDevice.LEDs[index1].Color.Blue + (index1 + 1 < otherDevice.LEDs.Length ? rel * otherDevice.LEDs[index1 + 1].Color.Blue : 0));
             }
-
         }
 
         public class LedUnit
@@ -37,6 +34,11 @@ namespace MadLedFrameworkSDK
             public string LEDName { get; set; }
             public LEDColor Color { get; set; } = new LEDColor(0,0,0);
             public object Data { get; set; }
+
+            public override string ToString()
+            {
+                return $"{LEDName} : {Color}";
+            }
         }
         public class LEDColor{
             public int Red { get; set; }
@@ -50,6 +52,11 @@ namespace MadLedFrameworkSDK
                 Red = r;
                 Green = g;
                 Blue = b;
+            }
+
+            public override string ToString()
+            {
+                return $"{Red},{Green},{Blue}";
             }
         }
 
