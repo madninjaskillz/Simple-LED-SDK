@@ -13,4 +13,9 @@ namespace MadLedSLSDriver
         public int Bank { get; set; }
         public int Pin { get; set; }
     }
+
+    public class MadLedData
+    {
+        public int LedNumber { get; set; }
+    }
 }

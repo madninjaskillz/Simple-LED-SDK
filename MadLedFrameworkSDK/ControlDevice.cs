@@ -36,6 +36,7 @@ namespace MadLedFrameworkSDK
         {
             public string LEDName { get; set; }
             public LEDColor Color { get; set; } = new LEDColor(0,0,0);
+            public object Data { get; set; }
         }
         public class LEDColor{
             public int Red { get; set; }
