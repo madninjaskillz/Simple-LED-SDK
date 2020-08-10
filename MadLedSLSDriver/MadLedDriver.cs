@@ -24,8 +24,8 @@ namespace MadLedSLSDriver
             serialDriver = new MadLedSerialDriver(specificDriverDetails.ComPort);
 
             //old init stuff, remove once arduino code reworked.
-            serialDriver.AddDevice("Top Front", 1, 4, 21);
-            serialDriver.AddDevice("Bottom Front", 0, 3, 21);
+            serialDriver.AddDevice("Top Front", 1, 4, 20);
+            serialDriver.AddDevice("Bottom Front", 0, 3, 20);
         }
 
         public List<ControlDevice> GetDevices()
@@ -62,7 +62,7 @@ namespace MadLedSLSDriver
                         new ControlDevice.LedUnit{ LEDName = "LED 17", Data = new MadLedData{LedNumber=17}},
                         new ControlDevice.LedUnit{ LEDName = "LED 18", Data = new MadLedData{LedNumber=18}},
                         new ControlDevice.LedUnit{ LEDName = "LED 19", Data = new MadLedData{LedNumber=19}},
-                        new ControlDevice.LedUnit{ LEDName = "LED 20", Data = new MadLedData{LedNumber=20}},
+                     //   new ControlDevice.LedUnit{ LEDName = "LED 20", Data = new MadLedData{LedNumber=20}},
                     }
                 },
                 new MadLedDevice
@@ -93,7 +93,7 @@ namespace MadLedSLSDriver
                         new ControlDevice.LedUnit{ LEDName = "LED 17", Data = new MadLedData{LedNumber=17}},
                         new ControlDevice.LedUnit{ LEDName = "LED 18", Data = new MadLedData{LedNumber=18}},
                         new ControlDevice.LedUnit{ LEDName = "LED 19", Data = new MadLedData{LedNumber=19}},
-                        new ControlDevice.LedUnit{ LEDName = "LED 20", Data = new MadLedData{LedNumber=20}},
+                      //  new ControlDevice.LedUnit{ LEDName = "LED 20", Data = new MadLedData{LedNumber=20}},
                     }
                 }
             };

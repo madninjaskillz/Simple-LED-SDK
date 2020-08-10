@@ -10,11 +10,11 @@ namespace SimpleRGBCycleProvider
 {
     public class SimpleRGBCycleDriver : ISimpleLEDDriver
     {
-        private const int LEDCount = 16;
+        private const int LEDCount = 32;
         private Timer timer;
         private int currentPos = 0;
-        ControlDevice.LedUnit[] leds = new ControlDevice.LedUnit[16];
-        ControlDevice.LedUnit[] fanLeds = new ControlDevice.LedUnit[16];
+        ControlDevice.LedUnit[] leds = new ControlDevice.LedUnit[32];
+        ControlDevice.LedUnit[] fanLeds = new ControlDevice.LedUnit[32];
         public SimpleRGBCycleDriver()
         {
             for (int i = 0; i < LEDCount; i++)

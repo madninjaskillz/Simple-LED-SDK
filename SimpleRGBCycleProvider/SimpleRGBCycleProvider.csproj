@@ -42,7 +42,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SimpleFanCycleDriver.cs" />
     <Compile Include="SimpleRGBCycleDriver.cs" />
   </ItemGroup>
   <ItemGroup>
