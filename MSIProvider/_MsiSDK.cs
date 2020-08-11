@@ -64,7 +64,7 @@ namespace MSIProvider
             _getErrorMessagePointer = (GetErrorMessagePointer)Marshal.GetDelegateForFunctionPointer(GetProcAddress(_dllHandle, "MLAPI_GetErrorMessage"), typeof(GetErrorMessagePointer));
         }
 
-        private static void UnloadMsiSDK()
+        public static void UnloadMsiSDK()
         {
             if (_dllHandle == IntPtr.Zero) return;
 

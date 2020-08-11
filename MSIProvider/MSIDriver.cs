@@ -18,12 +18,12 @@ namespace MSIProvider
         }
         public void Dispose()
         {
-            throw new NotImplementedException();
+            _MsiSDK.UnloadMsiSDK();
         }
 
         public void Configure(DriverDetails driverDetails)
         {
-            throw new NotImplementedException();
+            
         }
 
         public List<ControlDevice> GetDevices()
