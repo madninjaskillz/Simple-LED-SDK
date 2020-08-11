@@ -21,7 +21,6 @@ namespace MadLedFrameworkSDK
             myPort = new SerialPort(SerialPort, 19200);
             myPort.Open();
             myPort.DataReceived += MyPort_DataReceived;
-            SendCommandInstant("flush");
             Debug.WriteLine(Ping().TotalMilliseconds + "ms");
         }
 
@@ -58,65 +57,16 @@ namespace MadLedFrameworkSDK
         }
 
         DateTime lastSend = DateTime.MinValue;
-        public void Write(string cmd)
+       
+        public void ByteCommand(byte[] cmd)
         {
-            if ((DateTime.Now - lastSend).TotalMilliseconds > 10)
-            {
-                Task.Delay(10).Wait();
-            }
-
-            myPort.Write(cmd);
-        }
-
-        public void SendCommand(string cmd)
-        {
-            //if (sendBuffer.Length > 0)
-            //{
-            //    sendBuffer = sendBuffer + "~";
-            //}
-
-            sendBuffer = sendBuffer + cmd + "~";
-
-        }
-
-        public void Present()
-        {
-            if (sendBuffer.Length > 0)
-            {
-                Write(sendBuffer);
-                sendBuffer = "";
-            }
-        }
-
-        public void SendCommandInstant(string cmd)
-        {
-            Write(cmd + "~");
-        }
-
-        public void AddDevice(string name, int bank, int pin, int leds)
-        {
-            //add:0:3:21:Bottom Front
-
-            string cmd = $"add:{bank}:{pin}:{leds}:{name}";
-            Debug.WriteLine(">>>" + cmd);
-            SendCommandInstant(cmd);
-
+            myPort.Write(cmd,0,cmd.Length);
         }
 
         public void SetLED(int bank, int led, int r, int g, int b)
         {
-            //set:0:15:0:255:0
-            string cmd = $"set:{bank}:{led}:{r}:{g}:{b}";
-            SendCommand(cmd);
-            // Present();
-        }
+            ByteCommand(new byte[]{(byte)bank, (byte)led, (byte)r, (byte)g, (byte)b ,19,19});
 
-        public void BatchSetLED(int bank, int led, int led2, int r, int g, int b)
-        {
-            //set:0:15:0:255:0
-            string cmd = $"bulk:{bank}:{led}-{led2}:{r}:{g}:{b}";
-            SendCommand(cmd);
-            // Present();
         }
 
         public TimeSpan Ping()
@@ -133,56 +83,23 @@ namespace MadLedFrameworkSDK
                     getNextLine = null;
                 }
             };
-
-            SendCommandInstant("ping");
-
-            while (!gotResponse)
+            int tries = 0;
+            while (tries < 10&&!gotResponse)
             {
-                if ((DateTime.Now - start).TotalSeconds > 10)
+                ByteCommand(new byte[] {13, 10, 10, 10, 19, 19, 19});
+
+                while (!gotResponse)
                 {
-                    throw new TimeoutException("Took more than 10 seconds");
+                    if ((DateTime.Now - start).TotalSeconds > 10)
+                    {
+                        break;
+                    }
                 }
+
+                tries++;
             }
 
             return (DateTime.Now - start);
-        }
-
-        public void ListDevices()
-        {
-            string cmd = "devices";
-            SendCommandInstant(cmd);
-
-        }
-
-        public Tuple<int, int, int> GetLED(int bank, int led)
-        {
-            int r = 0;
-            int g = 0;
-            int b = 0;
-            string cmd = $"get:{bank}:{led}";
-            bool gotResponse = false;
-
-            getNextLine = s =>
-            {
-                if (!s.StartsWith(">"))
-                {
-                    var parts = s.Split(':');
-                    r = int.Parse(parts[0]);
-                    g = int.Parse(parts[1]);
-                    b = int.Parse(parts[2]);
-                    getNextLine = null;
-                    gotResponse = true;
-                }
-            };
-
-            SendCommandInstant(cmd);
-
-            while (!gotResponse)
-            {
-                Task.Delay(1).Wait();
-            }
-
-            return new Tuple<int, int, int>(r, g, b);
         }
 
 

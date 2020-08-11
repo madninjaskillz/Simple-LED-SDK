@@ -44,7 +44,7 @@ namespace SimpleRGBCycleProvider
                 };
             }
 
-            timer = new Timer(TimerCallback, null, 0, 50);
+            timer = new Timer(TimerCallback, null, 0, 33);
         }
 
         private void TimerCallback(object state)

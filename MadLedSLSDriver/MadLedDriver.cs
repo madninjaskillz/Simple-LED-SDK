@@ -24,8 +24,8 @@ namespace MadLedSLSDriver
             serialDriver = new MadLedSerialDriver(specificDriverDetails.ComPort);
 
             //old init stuff, remove once arduino code reworked.
-            serialDriver.AddDevice("Top Front", 1, 4, 20);
-            serialDriver.AddDevice("Bottom Front", 0, 3, 20);
+            //serialDriver.AddDevice("Top Front", 1, 4, 20);
+            //serialDriver.AddDevice("Bottom Front", 0, 3, 20);
         }
 
         public List<ControlDevice> GetDevices()
@@ -105,74 +105,74 @@ namespace MadLedSLSDriver
             {
                 ((MadLedDriver)controlDevice.Driver).serialDriver.SetLED(((MadLedDevice)controlDevice).Bank, int.Parse(led.LEDName.Split(' ').Last()), led.Color.Red, led.Color.Green, led.Color.Blue);
             }
-            var groupedByColor = controlDevice.LEDs.GroupBy(x => x.Color.AsString());
+            //var groupedByColor = controlDevice.LEDs.GroupBy(x => x.Color.AsString());
 
-            foreach (var group in groupedByColor)
-            {
-                List<Tuple<int, int?>> batches = new List<Tuple<int, int?>>();
+            //foreach (var group in groupedByColor)
+            //{
+            //    List<Tuple<int, int?>> batches = new List<Tuple<int, int?>>();
 
-                int r = group.First().Color.Red;
-                int g = group.First().Color.Green;
-                int b = group.First().Color.Blue;
+            //    int r = group.First().Color.Red;
+            //    int g = group.First().Color.Green;
+            //    int b = group.First().Color.Blue;
 
-                int lowest = group.Min(x => (x.Data as MadLedData).LedNumber);
-                int highest = group.Max(x => (x.Data as MadLedData).LedNumber);
+            //    int lowest = group.Min(x => (x.Data as MadLedData).LedNumber);
+            //    int highest = group.Max(x => (x.Data as MadLedData).LedNumber);
 
-                int groupStart = lowest;
-                int ptr = lowest;
+            //    int groupStart = lowest;
+            //    int ptr = lowest;
 
-                int start = lowest;
-                int end = 0;
-                for (int i = lowest; i <= highest + 1; i++)
-                {
-                    if (group.Any(x => (x.Data as MadLedData).LedNumber == i))
-                    {
-                        if (start > -1)
-                        {
-                            end = i;
-                        }
-                        else
-                        {
-                            start = i;
-                            end = 0;
-                        }
-                    }
-                    else
-                    {
-                        if (start > -1)
-                        {
-                            end = i - 1;
-                            if (end - start > 1)
-                            {
-                                batches.Add(new Tuple<int, int?>(start, end));
-                            }
-                            else
-                            {
-                                batches.Add(new Tuple<int, int?>(start, null));
-                            }
+            //    int start = lowest;
+            //    int end = 0;
+            //    for (int i = lowest; i <= highest + 1; i++)
+            //    {
+            //        if (group.Any(x => (x.Data as MadLedData).LedNumber == i))
+            //        {
+            //            if (start > -1)
+            //            {
+            //                end = i;
+            //            }
+            //            else
+            //            {
+            //                start = i;
+            //                end = 0;
+            //            }
+            //        }
+            //        else
+            //        {
+            //            if (start > -1)
+            //            {
+            //                end = i - 1;
+            //                if (end - start > 1)
+            //                {
+            //                    batches.Add(new Tuple<int, int?>(start, end));
+            //                }
+            //                else
+            //                {
+            //                    batches.Add(new Tuple<int, int?>(start, null));
+            //                }
 
-                            start = -1;
-                            end = 0;
-                        }
-                    }
+            //                start = -1;
+            //                end = 0;
+            //            }
+            //        }
 
-                }
+            //    }
 
-                foreach (var batch in batches)
-                {
-                    if (batch.Item2 != null)
-                    {
-                        ((MadLedDriver)controlDevice.Driver).serialDriver.BatchSetLED(((MadLedDevice)controlDevice).Bank, batch.Item1, batch.Item2.Value, r, g, b);
-                    }
-                    else
-                    {
-                        ((MadLedDriver)controlDevice.Driver).serialDriver.SetLED(((MadLedDevice)controlDevice).Bank, batch.Item1, r, g, b);
-                    }
-                }
+            //    foreach (var batch in batches)
+            //    {
+            //        if (batch.Item2 != null)
+            //        {
+            //            ((MadLedDriver)controlDevice.Driver).serialDriver.BatchSetLED(((MadLedDevice)controlDevice).Bank, batch.Item1, batch.Item2.Value, r, g, b);
+            //        }
+            //        else
+            //        {
+            //            ((MadLedDriver)controlDevice.Driver).serialDriver.SetLED(((MadLedDevice)controlDevice).Bank, batch.Item1, r, g, b);
+            //        }
+            //    }
 
-            }
+            //}
 
-            ((MadLedDriver)controlDevice.Driver).serialDriver.Present();
+            //((MadLedDriver)controlDevice.Driver).serialDriver.Present();
 
         }
 

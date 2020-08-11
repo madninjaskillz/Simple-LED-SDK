@@ -16,6 +16,7 @@ namespace MadLedSDK
         private static ControlDevice cycleFan;
         private static ControlDevice bottomFan;
         private static ControlDevice msiGpu;
+        private static ControlDevice topFan;
         static void Main(string[] args)
         {
             SLSManager ledManager = new SLSManager();
@@ -44,12 +45,12 @@ namespace MadLedSDK
             msiGpu = devices.First(x => x.Name.Contains("MSI"));
 
             bottomFan = devices.First();
-            var topFan = devices[1];
-            cycleFan = devices.First(x => x.Name == "Simple Purple Propella");
+            topFan = devices[1];
+            cycleFan = devices.First(x => x.Name == "Simple RGB Cycler");
             Console.WriteLine($"device: {bottomFan.Name} has {bottomFan.LEDs.Length} LEDs");
             Console.WriteLine($"device: {topFan.Name} has {topFan.LEDs.Length} LEDs");
 
-            var timer = new Timer(TimerCallback, null, 0, 50);
+            var timer = new Timer(TimerCallback, null, 0, 33);
 
             Console.ReadLine();
         }
@@ -58,6 +59,9 @@ namespace MadLedSDK
         {
             bottomFan.MapLEDs(cycleFan);
             bottomFan.Push();
+
+            topFan.MapLEDs(cycleFan);
+            topFan.Push();
 
             msiGpu.MapLEDs(cycleFan);
             msiGpu.Push();
