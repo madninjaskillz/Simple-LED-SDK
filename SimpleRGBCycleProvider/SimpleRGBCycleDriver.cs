@@ -15,6 +15,18 @@ namespace SimpleRGBCycleProvider
         private int currentPos = 0;
         ControlDevice.LedUnit[] leds = new ControlDevice.LedUnit[32];
         ControlDevice.LedUnit[] fanLeds = new ControlDevice.LedUnit[32];
+        ControlDevice.LedUnit[] fanLeds2 = new ControlDevice.LedUnit[32];
+        private int dly = 0;
+
+        private SimpleRGBCycleLEDData rgbPropData = new SimpleRGBCycleLEDData
+        {
+            RInc = 0.005f,
+            GInc = 0.0003f,
+            BInc = 0.0001f,
+            R = 0,
+            G = 0,
+            B = 0
+        };
         public SimpleRGBCycleDriver()
         {
             for (int i = 0; i < LEDCount; i++)
@@ -42,6 +54,15 @@ namespace SimpleRGBCycleProvider
                         B = i * .03f
                     },
                 };
+
+                fanLeds2[i] = new ControlDevice.LedUnit
+                {
+                    LEDName = "LED " + i,
+                    Data = new SimpleRGBCycleLEDData
+                    {
+                        LED = i,
+                    },
+                };
             }
 
             timer = new Timer(TimerCallback, null, 0, 33);
@@ -67,9 +88,34 @@ namespace SimpleRGBCycleProvider
             {
                 var tmp = ((SimpleRGBCycleLEDData)fanLeds[i].Data);
 
-                ControlDevice.LEDColor cl = ((currentPos + i) % (LEDCount/2)) != 0 ? new ControlDevice.LEDColor(0, 0, 0) : new ControlDevice.LEDColor(255, 0, 255);
+                ControlDevice.LEDColor cl = ((currentPos + i) % (LEDCount / 2)) != 0 ? new ControlDevice.LEDColor(0, 0, 0) : new ControlDevice.LEDColor(255, 0, 255);
 
                 fanLeds[i].Color = cl;
+            }
+
+            dly = dly + 1;
+
+            if (rgbPropData.R + rgbPropData.RInc > 1f || rgbPropData.R + rgbPropData.RInc < 0f)
+                rgbPropData.RInc = -rgbPropData.RInc;
+            if (rgbPropData.G + rgbPropData.GInc > 1f || rgbPropData.G + rgbPropData.GInc < 0f)
+                rgbPropData.GInc = -rgbPropData.RInc;
+            if (rgbPropData.B + rgbPropData.BInc > 1f || rgbPropData.B + rgbPropData.BInc < 0f)
+                rgbPropData.BInc = -rgbPropData.RInc;
+
+            rgbPropData.R = rgbPropData.R + rgbPropData.RInc;
+            rgbPropData.G = rgbPropData.G + rgbPropData.GInc;
+            rgbPropData.B = rgbPropData.B + rgbPropData.BInc;
+
+
+            var lcolv = new ControlDevice.LEDColor((int)(rgbPropData.R * 255), (int)(rgbPropData.G * 255), (int)(rgbPropData.B * 255));
+
+            for (int i = 0; i < LEDCount; i++)
+            {
+                var tmp = ((SimpleRGBCycleLEDData)fanLeds2[i].Data);
+
+                ControlDevice.LEDColor cl = ((currentPos + i) % (LEDCount / 2)) != 0 ? new ControlDevice.LEDColor(0, 0, 0) : lcolv;
+
+                fanLeds2[i].Color = cl;
             }
 
             currentPos++;
@@ -79,7 +125,7 @@ namespace SimpleRGBCycleProvider
 
         public void Configure(DriverDetails driverDetails)
         {
-            
+
         }
 
         public List<ControlDevice> GetDevices()
@@ -97,6 +143,12 @@ namespace SimpleRGBCycleProvider
                     Name = "Simple Purple Propella",
                     Driver = this,
                     LEDs = fanLeds
+                },
+                new ControlDevice
+                {
+                    Name = "Simple RGB Propella",
+                    Driver = this,
+                    LEDs = fanLeds2
                 }
             };
 
@@ -104,12 +156,12 @@ namespace SimpleRGBCycleProvider
 
         public void Push(ControlDevice controlDevice)
         {
-            
+
         }
 
         public void Pull(ControlDevice controlDevice)
         {
-            
+
         }
 
         public DriverProperties GetProperties()

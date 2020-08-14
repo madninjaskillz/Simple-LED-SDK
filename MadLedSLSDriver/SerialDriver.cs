@@ -18,11 +18,13 @@ namespace MadLedFrameworkSDK
         {
             SerialPort = comPort;
 
-            myPort = new SerialPort(SerialPort, 19200);
+            myPort = new SerialPort(SerialPort, 115200);
             myPort.Open();
             myPort.DataReceived += MyPort_DataReceived;
             Debug.WriteLine(Ping().TotalMilliseconds + "ms");
         }
+
+        
 
         private string dataReceived = "";
         private void MyPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
@@ -42,9 +44,9 @@ namespace MadLedFrameworkSDK
                     tmp = tmp.Substring(firstLine.Length + 1);
                     if (!firstLine.StartsWith(">"))
                     {
-                        Debug.WriteLine("}" + firstLine);
+                        Debug.WriteLine( firstLine);
                         getNextLine?.Invoke(firstLine);
-                        getNextLine = null;
+                        
                     }
                     else
                     {
@@ -63,12 +65,40 @@ namespace MadLedFrameworkSDK
             myPort.Write(cmd,0,cmd.Length);
         }
 
+        public void StringCommand(string cmd)
+        {
+            myPort.Write(cmd+"\r");
+        }
+
         public void SetLED(int bank, int led, int r, int g, int b)
         {
             ByteCommand(new byte[]{(byte)bank, (byte)led, (byte)r, (byte)g, (byte)b ,19,19});
 
         }
 
+        public Task<string> GetConfigAsync()
+        {
+            TaskCompletionSource<string> tcs = new TaskCompletionSource<string>();
+            Task<string> task = tcs.Task;
+            
+            getNextLine = s =>
+            {
+                if (s.Contains(":"))
+                {
+                    getNextLine = null;
+                    tcs.SetResult(s);
+                }
+            };
+
+            StringCommand("READCF");
+
+            return task;
+        }
+
+        public string GetConfig()
+        {
+            return GetConfigAsync().Result;
+        }
         public TimeSpan Ping()
         {
             DateTime start = DateTime.Now;
@@ -84,13 +114,13 @@ namespace MadLedFrameworkSDK
                 }
             };
             int tries = 0;
-            while (tries < 10&&!gotResponse)
+            while (tries < 4&&!gotResponse)
             {
                 ByteCommand(new byte[] {13, 10, 10, 10, 19, 19, 19});
 
                 while (!gotResponse)
                 {
-                    if ((DateTime.Now - start).TotalSeconds > 10)
+                    if ((DateTime.Now - start).TotalMilliseconds>250)
                     {
                         break;
                     }

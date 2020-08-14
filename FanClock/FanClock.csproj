@@ -4,17 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{28283822-1D5E-4B3F-89DD-97E19AD32216}</ProjectGuid>
-    <OutputType>Exe</OutputType>
-    <RootNamespace>MadLedSDK</RootNamespace>
-    <AssemblyName>MadLedSDK</AssemblyName>
+    <ProjectGuid>{5CD6AF70-F8BA-42E9-9110-3BAAC9C26E2F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>FanClock</RootNamespace>
+    <AssemblyName>FanClock</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -24,7 +23,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -43,32 +41,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
+    <Compile Include="Class1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\FanClock\FanClock.csproj">
-      <Project>{5cd6af70-f8ba-42e9-9110-3baac9c26e2f}</Project>
-      <Name>FanClock</Name>
-    </ProjectReference>
     <ProjectReference Include="..\MadLedFrameworkSDK\SimpleLEDSDK.csproj">
       <Project>{eb4729f4-0bf6-41d3-9548-f8c7846a2025}</Project>
       <Name>SimpleLEDSDK</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MadLedSLSDriver\MadLedSLSDriver.csproj">
-      <Project>{24BA8183-4F39-4B48-8A77-A4B747B3AC44}</Project>
-      <Name>MadLedSLSDriver</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MSIProvider\MSIProvider.csproj">
-      <Project>{a7382bf4-6f4e-4a39-a400-716064db3cf0}</Project>
-      <Name>MSIProvider</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SimpleRGBCycleProvider\SimpleRGBCycleProvider.csproj">
-      <Project>{2F2DCF20-EF2E-4AFD-B9C2-AF0CED35F9EA}</Project>
-      <Name>SimpleRGBCycleProvider</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
