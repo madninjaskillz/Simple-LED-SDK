@@ -15,6 +15,8 @@ namespace MadLedFrameworkSDK
     public class DriverProperties
     {
         public bool SupportsPull { get; set; }
+        public bool SupportsPush { get; set; }
+        public bool IsSource { get; set; }
     }
     
     public  class DriverDetails

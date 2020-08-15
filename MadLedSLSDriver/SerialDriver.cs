@@ -62,12 +62,18 @@ namespace MadLedFrameworkSDK
        
         public void ByteCommand(byte[] cmd)
         {
-            myPort.Write(cmd,0,cmd.Length);
+            if (myPort.IsOpen)
+            {
+                myPort.Write(cmd, 0, cmd.Length);
+            }
         }
 
         public void StringCommand(string cmd)
         {
-            myPort.Write(cmd+"\r");
+            if (myPort.IsOpen)
+            {
+                myPort.Write(cmd + "\r");
+            }
         }
 
         public void SetLED(int bank, int led, int r, int g, int b)

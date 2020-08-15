@@ -16,6 +16,7 @@ namespace MadLedSDK
     {
         private static ControlDevice cycleFan;
         private static ControlDevice bottomFan;
+        private static ControlDevice spareFan;
         private static ControlDevice backFan;
         private static ControlDevice msiGpu;
         private static ControlDevice topFan;
@@ -39,17 +40,18 @@ namespace MadLedSDK
             }
 
             bottomFan = devices.First(x => x.Name == "Bottom Front");
-            
+
             bottomFan.LedShift = 5;
-            
+
             topFan = devices.First(x => x.Name == "Top Front");
-            backFan = devices[2];
+            backFan = devices.First(x => x.Name == "Back");
+            spareFan = devices.First(x => x.Name == "Spare");
 
             topFan.Reverse = true;
             bottomFan.Reverse = true;
 
             cycleFan = devices.First(x => x.Name == "Simple RGB Propella");
-            
+
             var timer = new Timer(TimerCallback, null, 0, 33);
 
             Console.ReadLine();
@@ -62,6 +64,9 @@ namespace MadLedSDK
 
             topFan.MapLEDs(cycleFan);
             topFan.Push();
+
+            spareFan.MapLEDs(cycleFan);
+            spareFan.Push();
 
             backFan.MapLEDs(cycleFan);
             backFan.Push();

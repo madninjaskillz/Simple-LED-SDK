@@ -31,6 +31,8 @@ namespace MadLedFrameworkSDK
             }
         }
 
+        public string GetLedUID(LedUnit unit) => Name + "_" + unit.LEDName;
+
         public int MapIndex(int index)
         {
             int result = (index + LedShift) % LEDs.Length;
@@ -48,12 +50,18 @@ namespace MadLedFrameworkSDK
         {
             public string LEDName { get; set; }
             public LEDColor Color { get; set; } = new LEDColor(0,0,0);
-            public object Data { get; set; }
+            public LEDData Data { get; set; }
 
             public override string ToString()
             {
                 return $"{LEDName} : {Color}";
             }
+
+        }
+
+        public class LEDData
+        {
+            public int LEDNumber { get; set; }
         }
         public class LEDColor{
             public int Red { get; set; }

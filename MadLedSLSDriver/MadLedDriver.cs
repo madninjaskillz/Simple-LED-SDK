@@ -76,7 +76,7 @@ namespace MadLedSLSDriver
                         for (int i = 0; i < ledCount; i++)
                         {
                             leds[i] = new ControlDevice.LedUnit
-                                {LEDName = "LED " + i, Data = new MadLedData {LedNumber = i}};
+                                {LEDName = "LED " + i, Data = new MadLedData {LEDNumber = i}};
                         }
 
                         dvc.LEDs = leds;
@@ -101,7 +101,7 @@ namespace MadLedSLSDriver
                 {
                     ((MadLedDevice)controlDevice).SerialDriver.SetLED(((MadLedDevice) controlDevice).Bank,
 
-                        ((MadLedData) led.Data).LedNumber,
+                        ((MadLedData) led.Data).LEDNumber,
                         led.Color.Red, led.Color.Green, led.Color.Blue);
 
                     ((MadLedData)led.Data).SetColor.Red = led.Color.Red;
@@ -120,7 +120,9 @@ namespace MadLedSLSDriver
         {
             return new DriverProperties
             {
-                SupportsPull = false
+                SupportsPull = false,
+                SupportsPush = true,
+                IsSource = false
             };
         }
 

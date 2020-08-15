@@ -24,9 +24,9 @@ namespace FanClock
                 leds[i] = new ControlDevice.LedUnit
                 {
                     LEDName = "LED " + i,
-                    Data = new FanClockLedData
+                    Data = new ControlDevice.LEDData
                     {
-                        LED = i,
+                        LEDNumber = i,
                     },
                 };
 
@@ -50,10 +50,10 @@ namespace FanClock
             leds[(time.Second +30) % 60].Color = new ControlDevice.LEDColor(255,0,0);
             leds[(time.Minute + 30) % 60].Color.Green=255;
             leds[((int)(((time.Hour % 12)/12f)*60) + 30) % 60].Color.Blue=255;
-            Debug.WriteLine((int)(((time.Hour % 12) / 12f) * 60));
-            Debug.WriteLine(time.Minute);
-            Debug.WriteLine(time.Second);
-            Debug.WriteLine("----");
+            //Debug.WriteLine((int)(((time.Hour % 12) / 12f) * 60));
+            //Debug.WriteLine(time.Minute);
+            //Debug.WriteLine(time.Second);
+            //Debug.WriteLine("----");
 
         }
 
@@ -93,16 +93,12 @@ namespace FanClock
         {
             return new DriverProperties
             {
-                SupportsPull = false
+                SupportsPull = false,
+                SupportsPush = false,
+                IsSource = true
             };
         }
-
-        public class FanClockLedData
-        {
-            public int LED { get; set; }
-          
-        }
-
+        
         public void Dispose()
         {
             timer.Dispose();

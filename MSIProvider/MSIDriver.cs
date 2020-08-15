@@ -59,7 +59,7 @@ namespace MSIProvider
                             {
                                 mbdeivce.LEDs[l] = new ControlDevice.LedUnit
                                 {
-                                    Data = l,
+                                    Data = new ControlDevice.LEDData(){ LEDNumber = l},
                                     Color = new ControlDevice.LEDColor(0, 0, 0),
                                     LEDName = "Motherboard LED " + l
                                 };
@@ -82,7 +82,7 @@ namespace MSIProvider
                             {
                                 gpuDevice.LEDs[l] = new ControlDevice.LedUnit
                                 {
-                                    Data = l,
+                                    Data = new ControlDevice.LEDData{LEDNumber = l},
                                     Color = new ControlDevice.LEDColor(0, 0, 0),
                                     LEDName = "GPU LED " + l
                                 };
@@ -126,7 +126,9 @@ namespace MSIProvider
         {
             return new DriverProperties
             {
-                SupportsPull = false
+                SupportsPull = false,
+                SupportsPush = true,
+                IsSource = false
             };
         }
     }

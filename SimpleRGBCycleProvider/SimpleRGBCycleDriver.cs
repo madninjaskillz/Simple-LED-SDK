@@ -36,7 +36,7 @@ namespace SimpleRGBCycleProvider
                     LEDName = "LED " + i,
                     Data = new SimpleRGBCycleLEDData
                     {
-                        LED = i,
+                        LEDNumber = i,
                         R = i * 0.1f,
                         G = i * 0.04f,
                         B = i * .03f
@@ -48,7 +48,7 @@ namespace SimpleRGBCycleProvider
                     LEDName = "LED " + i,
                     Data = new SimpleRGBCycleLEDData
                     {
-                        LED = i,
+                        LEDNumber = i,
                         R = i * 0.1f,
                         G = i * 0.04f,
                         B = i * .03f
@@ -60,7 +60,7 @@ namespace SimpleRGBCycleProvider
                     LEDName = "LED " + i,
                     Data = new SimpleRGBCycleLEDData
                     {
-                        LED = i,
+                        LEDNumber = i,
                     },
                 };
             }
@@ -168,13 +168,15 @@ namespace SimpleRGBCycleProvider
         {
             return new DriverProperties
             {
-                SupportsPull = false
+                SupportsPull = false,
+                SupportsPush = false,
+                IsSource = true
             };
         }
 
-        public class SimpleRGBCycleLEDData
+        public class SimpleRGBCycleLEDData : ControlDevice.LEDData
         {
-            public int LED { get; set; }
+            
             public float R { get; set; }
             public float G { get; set; }
             public float B { get; set; }
