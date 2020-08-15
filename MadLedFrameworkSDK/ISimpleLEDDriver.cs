@@ -10,6 +10,8 @@ namespace MadLedFrameworkSDK
         void Push(ControlDevice controlDevice);
         void Pull(ControlDevice controlDevice);
         DriverProperties GetProperties();
+
+        string Name();
     }
 
     public class DriverProperties

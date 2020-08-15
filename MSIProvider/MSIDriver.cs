@@ -10,6 +10,10 @@ namespace MSIProvider
 {
     public class MSIDriver : ISimpleLEDDriver
     {
+        public string Name()
+        {
+            return "MSI";
+        }
         public MSIDriver()
         {
             _MsiSDK.Reload();
@@ -23,7 +27,7 @@ namespace MSIProvider
 
         public void Configure(DriverDetails driverDetails)
         {
-            
+
         }
 
         public List<ControlDevice> GetDevices()
@@ -34,72 +38,76 @@ namespace MSIProvider
             try
             {
                 tmp = _MsiSDK.GetDeviceInfo(out string[] deviceTypes, out int[] ledCounts);
-
-
-
-                for (int i = 0; i < deviceTypes.Length; i++)
+                
+                if (tmp != 0)
                 {
-                    try
+
+                    for (int i = 0; i < deviceTypes.Length; i++)
                     {
-                        string deviceType = deviceTypes[i];
-                        int ledCount = ledCounts[i];
-
-                        //Hex3l: MSI_MB provide access to the motherboard "leds" where a led must be intended as a led header (JRGB, JRAINBOW etc..) (Tested on MSI X570 Unify)
-                        if (deviceType.Equals("MSI_MB"))
+                        try
                         {
-                            var mbdeivce = new MSIControlDevice
-                            {
-                                Driver = this,
-                                Name = "MSI Motherboard",
-                                LEDs = new ControlDevice.LedUnit[ledCount],
-                                MSIDeviceType = deviceType
-                            };
+                            string deviceType = deviceTypes[i];
+                            int ledCount = ledCounts[i];
 
-                            for (int l = 0; l < ledCount; l++)
+                            if (deviceType.Equals("MSI_MB"))
                             {
-                                mbdeivce.LEDs[l] = new ControlDevice.LedUnit
+                                var mbdeivce = new MSIControlDevice
                                 {
-                                    Data = new ControlDevice.LEDData(){ LEDNumber = l},
-                                    Color = new ControlDevice.LEDColor(0, 0, 0),
-                                    LEDName = "Motherboard LED " + l
+                                    Driver = this,
+                                    Name = "MSI Motherboard",
+                                    LEDs = new ControlDevice.LedUnit[ledCount],
+                                    MSIDeviceType = deviceType,
+                                    DeviceType = DeviceTypes.MotherBoard
                                 };
-                            }
 
-                            returnValue.Add(mbdeivce);
+                                for (int l = 0; l < ledCount; l++)
+                                {
+                                    mbdeivce.LEDs[l] = new ControlDevice.LedUnit
+                                    {
+                                        Data = new ControlDevice.LEDData() { LEDNumber = l },
+                                        Color = new ControlDevice.LEDColor(0, 0, 0),
+                                        LEDName = "Motherboard LED " + l
+                                    };
+                                }
+
+                                returnValue.Add(mbdeivce);
+                            }
+                            else if (deviceType.Equals("MSI_VGA"))
+                            {
+
+                                var gpuDevice = new MSIControlDevice
+                                {
+                                    Driver = this,
+                                    Name = "MSI GPU",
+                                    LEDs = new ControlDevice.LedUnit[ledCount],
+                                    MSIDeviceType = deviceType,
+                                    DeviceType = DeviceTypes.GPU
+                                };
+
+                                for (int l = 0; l < ledCount; l++)
+                                {
+                                    gpuDevice.LEDs[l] = new ControlDevice.LedUnit
+                                    {
+                                        Data = new ControlDevice.LEDData { LEDNumber = l },
+                                        Color = new ControlDevice.LEDColor(0, 0, 0),
+                                        LEDName = "GPU LED " + l
+                                    };
+                                }
+
+                                returnValue.Add(gpuDevice);
+                            }
                         }
-                        else if (deviceType.Equals("MSI_VGA"))
+                        catch
                         {
 
-                            var gpuDevice = new MSIControlDevice
-                            {
-                                Driver = this,
-                                Name = "MSI GPU",
-                                LEDs = new ControlDevice.LedUnit[ledCount],
-                                MSIDeviceType = deviceType
-                            };
-
-                            for (int l = 0; l < ledCount; l++)
-                            {
-                                gpuDevice.LEDs[l] = new ControlDevice.LedUnit
-                                {
-                                    Data = new ControlDevice.LEDData{LEDNumber = l},
-                                    Color = new ControlDevice.LEDColor(0, 0, 0),
-                                    LEDName = "GPU LED " + l
-                                };
-                            }
-
-                            returnValue.Add(gpuDevice);
                         }
-
-                        //TODO DarthAffe 22.02.2020: Add other devices
                     }
-                    catch
-                    {
 
-                    }
                 }
+
             }
             catch
+
             {
             }
 
@@ -109,9 +117,11 @@ namespace MSIProvider
         public void Push(ControlDevice controlDevice)
         {
             MSIControlDevice msiDevice = controlDevice as MSIControlDevice;
-            
+
+
             for (int i = 0; i < controlDevice.LEDs.Length; i++)
             {
+                _MsiSDK.SetLedStyle(msiDevice.MSIDeviceType, i, "Steady");
                 _MsiSDK.SetLedColor(msiDevice.MSIDeviceType, i, controlDevice.LEDs[i].Color.Red,
                     controlDevice.LEDs[i].Color.Green, controlDevice.LEDs[i].Color.Blue);
             }

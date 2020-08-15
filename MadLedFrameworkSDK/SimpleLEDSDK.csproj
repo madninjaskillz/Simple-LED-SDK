@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DeviceTypes.cs" />
     <Compile Include="ISimpleLEDDriver.cs" />
     <Compile Include="ControlDevice.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

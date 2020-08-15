@@ -24,6 +24,9 @@ namespace MadLedSDK
         {
             SLSManager ledManager = new SLSManager();
 
+            MSIDriver msiDriver = new MSIDriver();
+            ledManager.Drivers.Add(msiDriver);
+
             var driver = new MadLedDriver();
             driver.Configure(null);
             ledManager.Drivers.Add(driver);
@@ -31,13 +34,16 @@ namespace MadLedSDK
             SimpleRGBCycleDriver cycleDriver = new SimpleRGBCycleDriver();
             ledManager.Drivers.Add(cycleDriver);
 
+            
 
             List<ControlDevice> devices = ledManager.GetDevices();
 
             foreach (var controlDevice in devices)
             {
-                Console.WriteLine(controlDevice.Name + " - " + controlDevice.DeviceType);
+                Console.WriteLine(controlDevice.Driver.Name()+"-"+ controlDevice.Name + " - " + controlDevice.DeviceType);
             }
+
+            msiGpu = devices.First(x => x.Name.Contains("MSI"));
 
             bottomFan = devices.First(x => x.Name == "Bottom Front");
 
@@ -70,6 +76,9 @@ namespace MadLedSDK
 
             backFan.MapLEDs(cycleFan);
             backFan.Push();
+
+            msiGpu.MapLEDs(cycleFan);
+            msiGpu.Push();
 
         }
     }

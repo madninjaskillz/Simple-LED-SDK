@@ -69,7 +69,8 @@ namespace MadLedSLSDriver
                             Pin = bank,
                             Driver = this,
                             SerialDriver = madLedSerialDriver,
-                            
+                            DeviceType = DeviceTypes.Fan
+
                         };
 
                         ControlDevice.LedUnit[] leds = new ControlDevice.LedUnit[ledCount];
@@ -124,6 +125,11 @@ namespace MadLedSLSDriver
                 SupportsPush = true,
                 IsSource = false
             };
+        }
+
+        public string Name()
+        {
+            return "MadLed";
         }
 
         public void Dispose()

@@ -64,7 +64,11 @@ namespace MadLedFrameworkSDK
         {
             if (myPort.IsOpen)
             {
-                myPort.Write(cmd, 0, cmd.Length);
+                try
+                {
+                    myPort.Write(cmd, 0, cmd.Length);
+                }
+                catch { }
             }
         }
 
@@ -72,14 +76,21 @@ namespace MadLedFrameworkSDK
         {
             if (myPort.IsOpen)
             {
-                myPort.Write(cmd + "\r");
+                try
+                {
+                    myPort.Write(cmd + "\r");
+                }
+                catch { }
             }
         }
 
         public void SetLED(int bank, int led, int r, int g, int b)
         {
-            ByteCommand(new byte[]{(byte)bank, (byte)led, (byte)r, (byte)g, (byte)b ,19,19});
-
+            try
+            {
+                ByteCommand(new byte[] { (byte)bank, (byte)led, (byte)r, (byte)g, (byte)b, 19, 19 });
+            }
+            catch { }
         }
 
         public Task<string> GetConfigAsync()

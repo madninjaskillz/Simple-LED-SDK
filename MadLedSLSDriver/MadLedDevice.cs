@@ -9,7 +9,6 @@ namespace MadLedSLSDriver
 {
     public class MadLedDevice : ControlDevice
     {
-        public override string DeviceType { get; } = "MadLed LED";
         public int Bank { get; set; }
         public int Pin { get; set; }
         public MadLedSerialDriver SerialDriver { get; set; }

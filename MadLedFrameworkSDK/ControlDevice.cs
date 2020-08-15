@@ -10,7 +10,7 @@ namespace MadLedFrameworkSDK
     public class ControlDevice
     {
         public string Name { get; set; }
-        public virtual string DeviceType { get; }
+        public string DeviceType { get; set; }
         public ISimpleLEDDriver Driver { get; set; }
         public LedUnit[] LEDs { get; set; }
         public int LedShift { get; set; } = 0;

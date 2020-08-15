@@ -10,6 +10,12 @@ namespace SimpleRGBCycleProvider
 {
     public class SimpleRGBCycleDriver : ISimpleLEDDriver
     {
+
+        public string Name()
+        {
+            return "Cycle Driver";
+        }
+
         private const int LEDCount = 32;
         private Timer timer;
         private int currentPos = 0;
@@ -136,19 +142,22 @@ namespace SimpleRGBCycleProvider
                 {
                     Name = "Simple RGB Cycler",
                     Driver = this,
-                    LEDs = leds
+                    LEDs = leds,
+                    DeviceType = DeviceTypes.Effect
                 },
                 new ControlDevice
                 {
                     Name = "Simple Purple Propella",
                     Driver = this,
-                    LEDs = fanLeds
+                    LEDs = fanLeds,
+                    DeviceType = DeviceTypes.Effect
                 },
                 new ControlDevice
                 {
                     Name = "Simple RGB Propella",
                     Driver = this,
-                    LEDs = fanLeds2
+                    LEDs = fanLeds2,
+                    DeviceType = DeviceTypes.Effect
                 }
             };
 

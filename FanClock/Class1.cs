@@ -72,7 +72,8 @@ namespace FanClock
                 {
                     Name = "Fan Clock",
                     Driver = this,
-                    LEDs = leds
+                    LEDs = leds,
+                    DeviceType = DeviceTypes.Effect
                 },
                 
             };
@@ -98,7 +99,10 @@ namespace FanClock
                 IsSource = true
             };
         }
-        
+
+        public string Name() => "FanClock";
+
+
         public void Dispose()
         {
             timer.Dispose();

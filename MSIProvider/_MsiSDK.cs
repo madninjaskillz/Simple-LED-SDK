@@ -50,6 +50,7 @@ namespace MSIProvider
 
             _initializePointer = (InitializePointer)Marshal.GetDelegateForFunctionPointer< InitializePointer>(GetProcAddress(_dllHandle, "MLAPI_Initialize"));
             _getDeviceInfoPointer = (GetDeviceInfoPointer)Marshal.GetDelegateForFunctionPointer(GetProcAddress(_dllHandle, "MLAPI_GetDeviceInfo"), typeof(GetDeviceInfoPointer));
+            _getDeviceInfoPointerInt = (GetDeviceInfoPointerInt)Marshal.GetDelegateForFunctionPointer(GetProcAddress(_dllHandle, "MLAPI_GetDeviceInfo"), typeof(GetDeviceInfoPointerInt));
             _getLedInfoPointer = (GetLedInfoPointer)Marshal.GetDelegateForFunctionPointer(GetProcAddress(_dllHandle, "MLAPI_GetLedInfo"), typeof(GetLedInfoPointer));
             _getLedColorPointer = (GetLedColorPointer)Marshal.GetDelegateForFunctionPointer(GetProcAddress(_dllHandle, "MLAPI_GetLedColor"), typeof(GetLedColorPointer));
             _getLedStylePointer = (GetLedStylePointer)Marshal.GetDelegateForFunctionPointer(GetProcAddress(_dllHandle, "MLAPI_GetLedStyle"), typeof(GetLedStylePointer));
@@ -93,6 +94,7 @@ namespace MSIProvider
 
         private static InitializePointer _initializePointer;
         private static GetDeviceInfoPointer _getDeviceInfoPointer;
+        private static GetDeviceInfoPointerInt _getDeviceInfoPointerInt;
         private static GetLedInfoPointer _getLedInfoPointer;
         private static GetLedColorPointer _getLedColorPointer;
         private static GetLedStylePointer _getLedStylePointer;
@@ -117,6 +119,11 @@ namespace MSIProvider
         private delegate int GetDeviceInfoPointer(
             [Out, MarshalAs(UnmanagedType.SafeArray, SafeArraySubType = VarEnum.VT_BSTR)] out string[] pDevType,
             [Out, MarshalAs(UnmanagedType.SafeArray, SafeArraySubType = VarEnum.VT_BSTR)] out string[] pLedCount);
+
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        private delegate int GetDeviceInfoPointerInt(
+            [Out, MarshalAs(UnmanagedType.SafeArray, SafeArraySubType = VarEnum.VT_BSTR)] out string[] pDevType,
+            [Out, MarshalAs(UnmanagedType.SafeArray, SafeArraySubType = VarEnum.VT_BSTR)] out int[] pLedCount);
 
         [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         private delegate int GetLedInfoPointer(
@@ -201,12 +208,34 @@ namespace MSIProvider
         {
             // HACK - SDK GetDeviceInfo returns a string[] for ledCount, so we'll parse that to int.
             int result = _getDeviceInfoPointer(out pDevType, out string[] ledCount);
-            pLedCount = new int[ledCount.Length];
+            if (pDevType != null)
+            {
+                pLedCount = new int[ledCount.Length];
 
-            for (int i = 0; i < ledCount.Length; i++)
-                pLedCount[i] = int.Parse(ledCount[i]);
+                for (int i = 0; i < ledCount.Length; i++)
+                    pLedCount[i] = int.Parse(ledCount[i]);
 
-            return result;
+
+
+                return result;
+            }
+            else
+            {
+                result = _getDeviceInfoPointerInt(out pDevType, out int[] ledCountInt);
+
+                pLedCount = new int[ledCount.Length];
+
+                for (int i = 0; i < ledCount.Length; i++)
+                    pLedCount[i] = int.Parse(ledCount[i]);
+
+
+
+                return result;
+            }
+
+            pDevType = new string[0];
+            pLedCount = new int[0];
+            return 0;
         }
 
         internal static int GetLedInfo(string type, int index, out string pName, out string[] pLedStyles) => _getLedInfoPointer(type, index, out pName, out pLedStyles);
