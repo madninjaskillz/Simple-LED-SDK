@@ -187,4 +187,84 @@ namespace ICUEDriver
     };
 
 
+    // ReSharper disable once InconsistentNaming    
+    /// <summary>
+    /// CUE-SDK: contains information about led and its color
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    internal struct _CorsairLedColorStruct
+    {
+        /// <summary>
+        /// CUE-SDK: identifier of LED to set
+        /// </summary>
+        internal int ledId;
+
+        /// <summary>
+        /// CUE-SDK: red   brightness[0..255]
+        /// </summary>
+        internal int r;
+
+        /// <summary>
+        /// CUE-SDK: green brightness[0..255]
+        /// </summary>
+        internal int g;
+
+        /// <summary>
+        /// CUE-SDK: blue  brightness[0..255]
+        /// </summary>
+        internal int b;
+    };
+
+    // ReSharper disable once InconsistentNaming
+    /// <summary>
+    /// CUE-SDK: contains number of leds and arrays with their positions
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    internal class _CorsairLedPositions
+    {
+        /// <summary>
+        /// CUE-SDK: integer value.Number of elements in following array
+        /// </summary>
+        internal int numberOfLed;
+
+        /// <summary>
+        /// CUE-SDK: array of led positions
+        /// </summary>
+        internal IntPtr pLedPosition;
+    }
+
+    // ReSharper disable once InconsistentNaming
+    /// <summary>
+    /// CUE-SDK: contains led id and position of led rectangle.Most of the keys are rectangular.
+    /// In case if key is not rectangular(like Enter in ISO / UK layout) it returns the smallest rectangle that fully contains the key
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    internal class _CorsairLedPosition
+    {
+        /// <summary>
+        /// CUE-SDK: identifier of led
+        /// </summary>
+        internal int LedId;
+
+        /// <summary>
+        /// CUE-SDK: values in mm
+        /// </summary>
+        internal double top;
+
+        /// <summary>
+        /// CUE-SDK: values in mm
+        /// </summary>
+        internal double left;
+
+        /// <summary>
+        /// CUE-SDK: values in mm
+        /// </summary>
+        internal double height;
+
+        /// <summary>
+        /// CUE-SDK: values in mm
+        /// </summary>
+        internal double width;
+    }
+
 }

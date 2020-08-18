@@ -17,7 +17,7 @@ namespace MadLedSDK
     {
         private static ControlDevice cycleFan;
         private static ControlDevice corsairDevice;
-        
+        private static ControlDevice bottomFan;
         static void Main(string[] args)
         {
             SLSManager ledManager = new SLSManager();
@@ -27,12 +27,12 @@ namespace MadLedSDK
             ICUEDriver.Configure(null);
             ledManager.Drivers.Add(ICUEDriver);
 
-            //Console.WriteLine("setting up madled");
-            //MadLedDriver madLed = new MadLedDriver();
-            //Console.WriteLine("Configuring madled");
-            //madLed.Configure(null);
-            //Console.WriteLine("Adding madled");
-            //ledManager.Drivers.Add(madLed);
+            Console.WriteLine("setting up madled");
+            MadLedDriver madLed = new MadLedDriver();
+            Console.WriteLine("Configuring madled");
+            madLed.Configure(null);
+            Console.WriteLine("Adding madled");
+            ledManager.Drivers.Add(madLed);
 
             SimpleRGBCycleDriver cycleDriver = new SimpleRGBCycleDriver();
             ledManager.Drivers.Add(cycleDriver);
@@ -46,7 +46,7 @@ namespace MadLedSDK
                 Console.WriteLine(controlDevice.Driver.Name()+"-"+ controlDevice.Name + " - " + controlDevice.DeviceType+", "+controlDevice.LEDs?.Length+" LEDs");
             }
 
-            
+            bottomFan = devices.First(x => x.Name == "Top Front");
             corsairDevice = devices.First(x => x.Name == "Corsair MM800RGB");
             cycleFan = devices.First(x => x.Name == "Simple RGB Propella");
 
@@ -57,9 +57,14 @@ namespace MadLedSDK
 
         private static void TimerCallback(object state)
         {
-            corsairDevice.MapLEDs(cycleFan);
-            corsairDevice.Push();
-                //bottomFan.MapLEDs(cycleFan);
+            //corsairDevice.MapLEDs(cycleFan);
+            //corsairDevice.Push();
+
+            corsairDevice.Pull();
+            bottomFan.MapLEDs(corsairDevice);
+            bottomFan.Push();
+
+            //bottomFan.MapLEDs(cycleFan);
             //bottomFan.Push();
             //topFan.MapLEDs(cycleFan);
             //topFan.Push();

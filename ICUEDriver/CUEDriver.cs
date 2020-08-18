@@ -57,15 +57,15 @@ namespace ICUEDriver
                                     + $"SDK-Version: {ProtocolDetails.SdkVersion} (Protocol {ProtocolDetails.SdkProtocolVersion})");
 
 
-            if (!_CUESDK.CorsairRequestControl(CorsairAccessMode.ExclusiveLightingControl))
-            {
-                throw new Exception(LastError.ToString());
-                HasExclusiveAccess = true;
-            }
-            else
-            {
+            //if (!_CUESDK.CorsairRequestControl(CorsairAccessMode.ExclusiveLightingControl))
+            //{
+            //    throw new Exception(LastError.ToString());
+            //    HasExclusiveAccess = true;
+            //}
+            //else
+            //{
                 HasExclusiveAccess = false;
-            }
+            //}
 
             if (!_CUESDK.CorsairSetLayerPriority(127))
             {
@@ -99,13 +99,27 @@ namespace ICUEDriver
                     continue; // Everything that doesn't support lighting control is useless
                 }
 
+                var nativeLedPositions = (_CorsairLedPositions)Marshal.PtrToStructure(_CUESDK.CorsairGetLedPositionsByDeviceIndex(info.CorsairDeviceIndex), typeof(_CorsairLedPositions));
+
+                int structSize = Marshal.SizeOf(typeof(_CorsairLedPosition));
+                IntPtr ptr = nativeLedPositions.pLedPosition;
+
+                List<_CorsairLedPosition> positions = new List<_CorsairLedPosition>();
+                for (int ii = 0; ii < nativeLedPositions.numberOfLed; ii++)
+                {
+                    _CorsairLedPosition ledPosition = (_CorsairLedPosition)Marshal.PtrToStructure(ptr, typeof(_CorsairLedPosition));
+                    ptr = new IntPtr(ptr.ToInt64() + structSize);
+                    positions.Add(ledPosition);
+                }
+
                 Debug.WriteLine(info.CorsairDeviceType);
 
                 CorsairDevice device = new CorsairDevice
                 {
                     Driver = this,
                     Name = info.DeviceName,
-                    CorsairDeviceIndex = info.CorsairDeviceIndex
+                    CorsairDeviceIndex = info.CorsairDeviceIndex,
+                    DeviceType = GetDeviceType(info.CorsairDeviceType)
                 };
 
                 var channelsInfo = (nativeDeviceInfo.channels);
@@ -147,15 +161,30 @@ namespace ICUEDriver
                     {
                         List<ControlDevice.LedUnit> leds = new List<ControlDevice.LedUnit>();
 
-                        for (int l = 0; l < nativeDeviceInfo.ledsCount; l++)
+                        int ctr = 0;
+                        foreach (var lp in positions)
                         {
-                            leds.Add(new ControlDevice.LedUnit
+                            leds.Add(new ControlDevice.LedUnit()
                             {
-                                Data = new ControlDevice.LEDData { LEDNumber = l },
-                                LEDName = "LED " + l,
+                                Data = new CorsairLedData
+                                {
+                                    LEDNumber = ctr,
+                                    CorsairLedId = lp.LedId
 
+                                },
+                                LEDName = device.Name+" "+ ctr
                             });
                         }
+
+                        //for (int l = 0; l < nativeDeviceInfo.ledsCount; l++)
+                        //{
+                        //    leds.Add(new ControlDevice.LedUnit
+                        //    {
+                        //        Data = new ControlDevice.LEDData { LEDNumber = l },
+                        //        LEDName = "LED " + l,
+
+                        //    });
+                        //}
 
                         device.LEDs = leds.ToArray();
 
@@ -170,6 +199,28 @@ namespace ICUEDriver
             return devices;
         }
 
+        private string GetDeviceType(CorsairDeviceType t)
+        {
+            switch (t)
+            {
+                case CorsairDeviceType.Cooler: return DeviceTypes.Cooler;
+                case CorsairDeviceType.CommanderPro: return DeviceTypes.Other;
+                case CorsairDeviceType.Headset: return DeviceTypes.Headset;
+                case CorsairDeviceType.HeadsetStand: return DeviceTypes.HeadsetStand;
+                case CorsairDeviceType.Keyboard: return DeviceTypes.Keyboard;
+                case CorsairDeviceType.MemoryModule: return DeviceTypes.Memory;
+                case CorsairDeviceType.Unknown:
+                    return DeviceTypes.Other;
+                case CorsairDeviceType.Mouse:
+                    return DeviceTypes.Mouse;
+                case CorsairDeviceType.Mousepad:
+                    return DeviceTypes.MousePad;
+                case CorsairDeviceType.LightningNodePro:
+                    return DeviceTypes.Other;
+                default:
+                    return DeviceTypes.Other;
+            }
+        }
 
         private static CorsairLedId GetChannelReferenceId(CorsairDeviceType deviceType, int channel)
         {
@@ -203,7 +254,7 @@ namespace ICUEDriver
             {
                 _CorsairLedColor color = new _CorsairLedColor
                 {
-                    ledId = (int)(led.Data.LEDNumber + 155),
+                    ledId =((CorsairLedData)led.Data).CorsairLedId,
                     r = (byte)led.Color.Red,
                     g = (byte)led.Color.Green,
                     b = (byte)led.Color.Blue
@@ -225,7 +276,79 @@ namespace ICUEDriver
 
         public void Pull(ControlDevice controlDevice)
         {
-            Debug.WriteLine("Pull not implemented yet");
+            /*
+               int structSize = Marshal.SizeOf(typeof(_CorsairLedColor));
+               IntPtr ptr = Marshal.AllocHGlobal(structSize * controlDevice.LEDs.Count());
+               IntPtr addPtr = new IntPtr(ptr.ToInt64());
+               foreach (var led in controlDevice.LEDs)
+               {
+                   _CorsairLedColor color = new _CorsairLedColor { ledId = (int)(led.Data.LEDNumber) };
+                   Marshal.StructureToPtr(color, addPtr, false);
+                   addPtr = new IntPtr(addPtr.ToInt64() + structSize);
+               }
+
+               _CUESDK.CorsairGetLedsColorsByDeviceIndex(((CorsairDevice)controlDevice).CorsairDeviceIndex, controlDevice.LEDs.Count(), ptr);
+
+               _CorsairLedColorStruct[] derp = MakeArray<_CorsairLedColorStruct>(ptr.ToInt32(), controlDevice.LEDs.Length);
+
+               IntPtr readPtr = ptr;
+               for (int i = 0; i < controlDevice.LEDs.Count(); i++)
+               {
+                   _CorsairLedColor ledColor = (_CorsairLedColor)Marshal.PtrToStructure(readPtr, typeof(_CorsairLedColor));
+
+                   var led= controlDevice.LEDs.FirstOrDefault(x => x.Data is CorsairLedData cled && cled.CorsairLedId == ledColor.ledId);
+
+                   if (led != null)
+                   {
+                    led.Color = new ControlDevice.LEDColor(ledColor.r, ledColor.g, ledColor.b);
+                   }
+
+                   readPtr = new IntPtr(readPtr.ToInt64() + structSize);
+               }
+
+               Marshal.FreeHGlobal(ptr);*/
+
+            int structSize = Marshal.SizeOf(typeof(_CorsairLedColor));
+            IntPtr ptr = Marshal.AllocHGlobal(structSize * controlDevice.LEDs.Count());
+            IntPtr addPtr = new IntPtr(ptr.ToInt64());
+            foreach (var led in controlDevice.LEDs)
+            {
+                _CorsairLedColor color = new _CorsairLedColor { ledId = (int)((CorsairLedData)led.Data).CorsairLedId };
+                Marshal.StructureToPtr(color, addPtr, false);
+                addPtr = new IntPtr(addPtr.ToInt64() + structSize);
+            }
+
+            _CUESDK.CorsairGetLedsColorsByDeviceIndex(((CorsairDevice)controlDevice).CorsairDeviceIndex, controlDevice.LEDs.Count(), ptr);
+
+            IntPtr readPtr = ptr;
+            for (int i = 0; i < controlDevice.LEDs.Count(); i++)
+            {
+                _CorsairLedColor ledColor = (_CorsairLedColor)Marshal.PtrToStructure(readPtr, typeof(_CorsairLedColor));
+
+                var setme = controlDevice.LEDs.FirstOrDefault(x =>((CorsairLedData) x.Data).CorsairLedId == ledColor.ledId);
+                if (setme != null)
+                {
+                    setme.Color= new ControlDevice.LEDColor(ledColor.r, ledColor.g, ledColor.b);
+                }
+                
+                readPtr = new IntPtr(readPtr.ToInt64() + structSize);
+            }
+
+            Marshal.FreeHGlobal(ptr);
+
+        }
+
+        static unsafe T[] MakeArray<T>(int t, int length) where T : struct
+        {
+            int tSizeInBytes = Marshal.SizeOf(typeof(T));
+            T[] result = new T[length];
+            for (int i = 0; i < length; i++)
+            {
+                IntPtr p = new IntPtr((byte*)t + (i * tSizeInBytes));
+                result[i] = (T)System.Runtime.InteropServices.Marshal.PtrToStructure(p, typeof(T));
+            }
+
+            return result;
         }
 
         public DriverProperties GetProperties()
@@ -246,6 +369,11 @@ namespace ICUEDriver
         public class CorsairDevice : ControlDevice
         {
             public int CorsairDeviceIndex { get; set; }
+        }
+
+        public class CorsairLedData : ControlDevice.LEDData
+        {
+            public int CorsairLedId { get; set; }
         }
     }
 }
