@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -15,47 +16,38 @@ namespace MadLedSDK
     class Program
     {
         private static ControlDevice cycleFan;
-        private static ControlDevice bottomFan;
-        private static ControlDevice spareFan;
-        private static ControlDevice backFan;
-        private static ControlDevice msiGpu;
-        private static ControlDevice topFan;
+        private static ControlDevice corsairDevice;
+        
         static void Main(string[] args)
         {
             SLSManager ledManager = new SLSManager();
 
-            MSIDriver msiDriver = new MSIDriver();
-            ledManager.Drivers.Add(msiDriver);
+            
+            var ICUEDriver = new ICUEDriver.CUEDriver();
+            ICUEDriver.Configure(null);
+            ledManager.Drivers.Add(ICUEDriver);
 
-            var driver = new MadLedDriver();
-            driver.Configure(null);
-            ledManager.Drivers.Add(driver);
+            //Console.WriteLine("setting up madled");
+            //MadLedDriver madLed = new MadLedDriver();
+            //Console.WriteLine("Configuring madled");
+            //madLed.Configure(null);
+            //Console.WriteLine("Adding madled");
+            //ledManager.Drivers.Add(madLed);
 
             SimpleRGBCycleDriver cycleDriver = new SimpleRGBCycleDriver();
             ledManager.Drivers.Add(cycleDriver);
 
-            
 
+            Console.WriteLine("Getting devices");
             List<ControlDevice> devices = ledManager.GetDevices();
 
             foreach (var controlDevice in devices)
             {
-                Console.WriteLine(controlDevice.Driver.Name()+"-"+ controlDevice.Name + " - " + controlDevice.DeviceType);
+                Console.WriteLine(controlDevice.Driver.Name()+"-"+ controlDevice.Name + " - " + controlDevice.DeviceType+", "+controlDevice.LEDs?.Length+" LEDs");
             }
 
-            msiGpu = devices.First(x => x.Name.Contains("MSI"));
-
-            bottomFan = devices.First(x => x.Name == "Bottom Front");
-
-            bottomFan.LedShift = 5;
-
-            topFan = devices.First(x => x.Name == "Top Front");
-            backFan = devices.First(x => x.Name == "Back");
-            spareFan = devices.First(x => x.Name == "Spare");
-
-            topFan.Reverse = true;
-            bottomFan.Reverse = true;
-
+            
+            corsairDevice = devices.First(x => x.Name == "Corsair MM800RGB");
             cycleFan = devices.First(x => x.Name == "Simple RGB Propella");
 
             var timer = new Timer(TimerCallback, null, 0, 33);
@@ -65,20 +57,21 @@ namespace MadLedSDK
 
         private static void TimerCallback(object state)
         {
-            bottomFan.MapLEDs(cycleFan);
-            bottomFan.Push();
+            corsairDevice.MapLEDs(cycleFan);
+            corsairDevice.Push();
+                //bottomFan.MapLEDs(cycleFan);
+            //bottomFan.Push();
+            //topFan.MapLEDs(cycleFan);
+            //topFan.Push();
 
-            topFan.MapLEDs(cycleFan);
-            topFan.Push();
+            //spareFan.MapLEDs(cycleFan);
+            //spareFan.Push();
 
-            spareFan.MapLEDs(cycleFan);
-            spareFan.Push();
+            //backFan.MapLEDs(cycleFan);
+            //backFan.Push();
 
-            backFan.MapLEDs(cycleFan);
-            backFan.Push();
-
-            msiGpu.MapLEDs(cycleFan);
-            msiGpu.Push();
+            //msiGpu.MapLEDs(cycleFan);
+            //msiGpu.Push();
 
         }
     }

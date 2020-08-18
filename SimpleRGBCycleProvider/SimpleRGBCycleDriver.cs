@@ -43,9 +43,9 @@ namespace SimpleRGBCycleProvider
                     Data = new SimpleRGBCycleLEDData
                     {
                         LEDNumber = i,
-                        R = i * 0.1f,
-                        G = i * 0.04f,
-                        B = i * .03f
+                        R = i * 0.01f,
+                        G = i * 0.004f,
+                        B = i * .003f
                     },
                 };
 
@@ -55,9 +55,9 @@ namespace SimpleRGBCycleProvider
                     Data = new SimpleRGBCycleLEDData
                     {
                         LEDNumber = i,
-                        R = i * 0.1f,
-                        G = i * 0.04f,
-                        B = i * .03f
+                        R = i * 0.01f,
+                        G = i * 0.004f,
+                        B = i * .003f
                     },
                 };
 
