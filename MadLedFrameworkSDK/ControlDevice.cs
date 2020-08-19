@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Drawing;
 
 namespace MadLedFrameworkSDK
 {
@@ -17,17 +18,23 @@ namespace MadLedFrameworkSDK
         public bool Reverse { get; set; } = false;
         public void MapLEDs(ControlDevice otherDevice)
         {
-            
+
+            Bitmap bm = new Bitmap(otherDevice.LEDs.Length, 1);
+
+            for (var i = 0; i < otherDevice.LEDs.Length; i++)
+            {
+                bm.SetPixel(i, 0, Color.FromArgb(otherDevice.LEDs[i].Color.Red, otherDevice.LEDs[i].Color.Green, otherDevice.LEDs[i].Color.Blue));
+            }
+
+            Bitmap bm2 = new Bitmap(bm, new Size(LEDs.Length, 1));
+
             for (var i = 0; i < LEDs.Length; i++)
             {
                 int x = MapIndex(i);
-                var doubleIndex1 = (double)i * otherDevice.LEDs.Length / LEDs.Length;
-                var index1 = (int)Math.Floor(doubleIndex1);
-                var rel = doubleIndex1 - index1;
-
-                LEDs[x].Color.Red = (int)Math.Round((1.0 - rel) * otherDevice.LEDs[index1].Color.Red + (index1 + 1 < otherDevice.LEDs.Length ? rel * otherDevice.LEDs[index1 + 1].Color.Red : 0));
-                LEDs[x].Color.Green = (int)Math.Round((1.0 - rel) * otherDevice.LEDs[index1].Color.Green + (index1 + 1 < otherDevice.LEDs.Length ? rel * otherDevice.LEDs[index1 + 1].Color.Green : 0));
-                LEDs[x].Color.Blue = (int)Math.Round((1.0 - rel) * otherDevice.LEDs[index1].Color.Blue + (index1 + 1 < otherDevice.LEDs.Length ? rel * otherDevice.LEDs[index1 + 1].Color.Blue : 0));
+                var cl = bm2.GetPixel(i, 0);
+                LEDs[x].Color.Red = cl.R;
+                LEDs[x].Color.Green = cl.G;
+                LEDs[x].Color.Blue = cl.B;
             }
         }
 
@@ -63,25 +70,7 @@ namespace MadLedFrameworkSDK
         {
             public int LEDNumber { get; set; }
         }
-        public class LEDColor{
-            public int Red { get; set; }
-            public int Green { get; set; }
-            public int Blue { get; set; }
-
-            public string AsString() => Red + "," + Green + "," + Blue;
-
-            public LEDColor(int r, int g, int b)
-            {
-                Red = r;
-                Green = g;
-                Blue = b;
-            }
-
-            public override string ToString()
-            {
-                return $"{Red},{Green},{Blue}";
-            }
-        }
+        
 
         public void Push()
         {

@@ -33,6 +33,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -42,8 +43,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DeviceTypes.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="ISimpleLEDDriver.cs" />
     <Compile Include="ControlDevice.cs" />
+    <Compile Include="LEDColor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SLSManager.cs" />
   </ItemGroup>

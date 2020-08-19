@@ -42,12 +42,12 @@ namespace FanClock
             {
                
 
-                leds[i].Color = new ControlDevice.LEDColor(0,0,0);
+                leds[i].Color = new LEDColor(0,0,0);
             }
 
             var time = DateTime.Now;
 
-            leds[(time.Second +30) % 60].Color = new ControlDevice.LEDColor(255,0,0);
+            leds[(time.Second +30) % 60].Color = new LEDColor(255,0,0);
             leds[(time.Minute + 30) % 60].Color.Green=255;
             leds[((int)(((time.Hour % 12)/12f)*60) + 30) % 60].Color.Blue=255;
             //Debug.WriteLine((int)(((time.Hour % 12) / 12f) * 60));

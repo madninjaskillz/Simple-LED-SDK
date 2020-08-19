@@ -87,14 +87,14 @@ namespace SimpleRGBCycleProvider
                 tmp.G = tmp.G + tmp.GInc;
                 tmp.B = tmp.B + tmp.BInc;
 
-                leds[i].Color = new ControlDevice.LEDColor((int)(tmp.R * 255), (int)(tmp.G * 255), (int)(tmp.B * 255));
+                leds[i].Color = new LEDColor((int)(tmp.R * 255), (int)(tmp.G * 255), (int)(tmp.B * 255));
             }
 
             for (int i = 0; i < LEDCount; i++)
             {
                 var tmp = ((SimpleRGBCycleLEDData)fanLeds[i].Data);
 
-                ControlDevice.LEDColor cl = ((currentPos + i) % (LEDCount / 2)) != 0 ? new ControlDevice.LEDColor(0, 0, 0) : new ControlDevice.LEDColor(255, 0, 255);
+                LEDColor cl = ((currentPos + i) % (LEDCount / 2)) != 0 ? new LEDColor(0, 0, 0) : new LEDColor(255, 0, 255);
 
                 fanLeds[i].Color = cl;
             }
@@ -113,13 +113,13 @@ namespace SimpleRGBCycleProvider
             rgbPropData.B = rgbPropData.B + rgbPropData.BInc;
 
 
-            var lcolv = new ControlDevice.LEDColor((int)(rgbPropData.R * 255), (int)(rgbPropData.G * 255), (int)(rgbPropData.B * 255));
+            var lcolv = new LEDColor((int)(rgbPropData.R * 255), (int)(rgbPropData.G * 255), (int)(rgbPropData.B * 255));
 
             for (int i = 0; i < LEDCount; i++)
             {
                 var tmp = ((SimpleRGBCycleLEDData)fanLeds2[i].Data);
 
-                ControlDevice.LEDColor cl = ((currentPos + i) % (LEDCount / 2)) != 0 ? new ControlDevice.LEDColor(0, 0, 0) : lcolv;
+                LEDColor cl = ((currentPos + i) % (LEDCount / 2)) != 0 ? new LEDColor(0, 0, 0) : lcolv;
 
                 fanLeds2[i].Color = cl;
             }

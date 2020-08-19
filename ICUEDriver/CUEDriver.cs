@@ -300,7 +300,7 @@ namespace ICUEDriver
 
                    if (led != null)
                    {
-                    led.Color = new ControlDevice.LEDColor(ledColor.r, ledColor.g, ledColor.b);
+                    led.Color = new LEDColor(ledColor.r, ledColor.g, ledColor.b);
                    }
 
                    readPtr = new IntPtr(readPtr.ToInt64() + structSize);
@@ -328,7 +328,7 @@ namespace ICUEDriver
                 var setme = controlDevice.LEDs.FirstOrDefault(x =>((CorsairLedData) x.Data).CorsairLedId == ledColor.ledId);
                 if (setme != null)
                 {
-                    setme.Color= new ControlDevice.LEDColor(ledColor.r, ledColor.g, ledColor.b);
+                    setme.Color= new LEDColor(ledColor.r, ledColor.g, ledColor.b);
                 }
                 
                 readPtr = new IntPtr(readPtr.ToInt64() + structSize);

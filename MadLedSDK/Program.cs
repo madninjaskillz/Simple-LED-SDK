@@ -15,9 +15,6 @@ namespace MadLedSDK
 {
     class Program
     {
-        private static ControlDevice cycleFan;
-        private static ControlDevice corsairDevice;
-        private static ControlDevice bottomFan;
         static void Main(string[] args)
         {
             SLSManager ledManager = new SLSManager();
@@ -46,38 +43,18 @@ namespace MadLedSDK
                 Console.WriteLine(controlDevice.Driver.Name()+"-"+ controlDevice.Name + " - " + controlDevice.DeviceType+", "+controlDevice.LEDs?.Length+" LEDs");
             }
 
-            bottomFan = devices.First(x => x.Name == "Top Front");
-            corsairDevice = devices.First(x => x.Name == "Corsair MM800RGB");
-            cycleFan = devices.First(x => x.Name == "Simple RGB Propella");
+            var bottomFan = devices.First(x => x.Name == "Top Front");
+            var corsairDevice = devices.First(x => x.Name == "Corsair MM800RGB");
+            var cycleFan = devices.First(x => x.Name == "Simple RGB Cycler");
 
-            var timer = new Timer(TimerCallback, null, 0, 33);
+            var timer = new Timer((state)=>
+            {
+                bottomFan.MapLEDs(cycleFan);
+                bottomFan.Push();
+            }, null, 0, 33);
 
             Console.ReadLine();
         }
 
-        private static void TimerCallback(object state)
-        {
-            //corsairDevice.MapLEDs(cycleFan);
-            //corsairDevice.Push();
-
-            corsairDevice.Pull();
-            bottomFan.MapLEDs(corsairDevice);
-            bottomFan.Push();
-
-            //bottomFan.MapLEDs(cycleFan);
-            //bottomFan.Push();
-            //topFan.MapLEDs(cycleFan);
-            //topFan.Push();
-
-            //spareFan.MapLEDs(cycleFan);
-            //spareFan.Push();
-
-            //backFan.MapLEDs(cycleFan);
-            //backFan.Push();
-
-            //msiGpu.MapLEDs(cycleFan);
-            //msiGpu.Push();
-
-        }
     }
 }

@@ -65,7 +65,7 @@ namespace MSIProvider
                                     mbdeivce.LEDs[l] = new ControlDevice.LedUnit
                                     {
                                         Data = new ControlDevice.LEDData() { LEDNumber = l },
-                                        Color = new ControlDevice.LEDColor(0, 0, 0),
+                                        Color = new LEDColor(0, 0, 0),
                                         LEDName = "Motherboard LED " + l
                                     };
                                 }
@@ -89,7 +89,7 @@ namespace MSIProvider
                                     gpuDevice.LEDs[l] = new ControlDevice.LedUnit
                                     {
                                         Data = new ControlDevice.LEDData { LEDNumber = l },
-                                        Color = new ControlDevice.LEDColor(0, 0, 0),
+                                        Color = new LEDColor(0, 0, 0),
                                         LEDName = "GPU LED " + l
                                     };
                                 }

@@ -16,6 +16,6 @@ namespace MadLedSLSDriver
 
     public class MadLedData : ControlDevice.LEDData
     {
-        public ControlDevice.LEDColor SetColor { get; set; } = new ControlDevice.LEDColor(0,0,0);
+        public LEDColor SetColor { get; set; } = new LEDColor(0,0,0);
     }
 }
