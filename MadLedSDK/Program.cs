@@ -6,10 +6,14 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using FanClock;
+using ICUEDriver;
+using IT8297Driver;
 using MadLedFrameworkSDK;
 using MadLedSLSDriver;
 using MSIProvider;
+using ScreenShotSource;
 using SimpleRGBCycleProvider;
+using SteelSeriesSLSProvider;
 
 namespace MadLedSDK
 {
@@ -17,43 +21,58 @@ namespace MadLedSDK
     {
         static void Main(string[] args)
         {
+
+
+
             SLSManager ledManager = new SLSManager();
-
-            
-            var ICUEDriver = new ICUEDriver.CUEDriver();
-            ICUEDriver.Configure(null);
-            ledManager.Drivers.Add(ICUEDriver);
-
-            Console.WriteLine("setting up madled");
-            MadLedDriver madLed = new MadLedDriver();
-            Console.WriteLine("Configuring madled");
-            madLed.Configure(null);
-            Console.WriteLine("Adding madled");
-            ledManager.Drivers.Add(madLed);
-
-            SimpleRGBCycleDriver cycleDriver = new SimpleRGBCycleDriver();
-            ledManager.Drivers.Add(cycleDriver);
-
-
+            ledManager.Drivers.Add(new IT8296Provider());
+            ledManager.Drivers.Add(new SteelSeriesDriver());
+            ledManager.Drivers.Add(new SimpleRGBCycleDriver());
+            //ledManager.Drivers.Add(new MadLedDriver());
+            ledManager.Drivers.Add(new ScreenShotSourceProvider());
+            ledManager.Drivers.Add(new CUEDriver());
+            ledManager.Init();
             Console.WriteLine("Getting devices");
             List<ControlDevice> devices = ledManager.GetDevices();
 
+            Dictionary<int, ControlDevice> driv = new Dictionary<int, ControlDevice>();
+            int ct = 1;
             foreach (var controlDevice in devices)
             {
-                Console.WriteLine(controlDevice.Driver.Name()+"-"+ controlDevice.Name + " - " + controlDevice.DeviceType+", "+controlDevice.LEDs?.Length+" LEDs");
+                Console.WriteLine(ct + ": " + controlDevice.Driver.Name() + "-" + controlDevice.Name + " - " + controlDevice.DeviceType + ", " + controlDevice.LEDs?.Length + " LEDs");
+                driv.Add(ct, controlDevice);
+                ct++;
             }
 
-            var bottomFan = devices.First(x => x.Name == "Top Front");
-            var corsairDevice = devices.First(x => x.Name == "Corsair MM800RGB");
-            var cycleFan = devices.First(x => x.Name == "Simple RGB Cycler");
+            Console.WriteLine("Type Source Number");
+            string derp = Console.ReadLine();
 
-            var timer = new Timer((state)=>
+
+
+            ControlDevice cycleFan = driv[int.Parse(derp)]; //devices.First(xx => xx.Name == "Simple RGB Cycler");
+
+            var timer = new Timer((state) =>
             {
-                bottomFan.MapLEDs(cycleFan);
-                bottomFan.Push();
+                foreach (var t in devices.Where(xx => xx.Driver.GetProperties().SupportsPush && xx.LEDs != null && xx.LEDs.Length > 0))
+                {
+                    t.MapLEDs(cycleFan);
+                    t.Push();
+                }
+
             }, null, 0, 33);
 
-            Console.ReadLine();
+            while (true)
+            {
+                Console.WriteLine("Type Source Number (Q TO QUIT)");
+                derp = Console.ReadLine();
+                if (derp.ToUpper() == "Q")
+                {
+                    return;
+                }
+                cycleFan = driv[int.Parse(derp)]; //devices.First(xx => xx.Name == "Simple RGB Cycler");
+
+            }
+            
         }
 
     }

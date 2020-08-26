@@ -55,8 +55,12 @@
       <Name>FanClock</Name>
     </ProjectReference>
     <ProjectReference Include="..\ICUEDriver\ICUEDriver.csproj">
-      <Project>{70b37817-c149-46c1-a6f5-d83d9cca8640}</Project>
+      <Project>{70B37817-C149-46C1-A6F5-D83D9CCA8640}</Project>
       <Name>ICUEDriver</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\IT8297Driver\IT8297Driver.csproj">
+      <Project>{20ED218B-964F-4C44-A4C1-2A5978FA7C3C}</Project>
+      <Name>IT8297Driver</Name>
     </ProjectReference>
     <ProjectReference Include="..\MadLedFrameworkSDK\SimpleLEDSDK.csproj">
       <Project>{eb4729f4-0bf6-41d3-9548-f8c7846a2025}</Project>
@@ -70,9 +74,17 @@
       <Project>{a7382bf4-6f4e-4a39-a400-716064db3cf0}</Project>
       <Name>MSIProvider</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ScreenShotSource\ScreenShotSource.csproj">
+      <Project>{1147B007-13A8-487F-9A2C-8A65A1CBA357}</Project>
+      <Name>ScreenShotSource</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SimpleRGBCycleProvider\SimpleRGBCycleProvider.csproj">
       <Project>{2F2DCF20-EF2E-4AFD-B9C2-AF0CED35F9EA}</Project>
       <Name>SimpleRGBCycleProvider</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SteelSeriesSLSProvider\SteelSeriesSLSProvider.csproj">
+      <Project>{068617AD-A8E7-40CC-91F4-9235E348C729}</Project>
+      <Name>SteelSeriesSLSProvider</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
