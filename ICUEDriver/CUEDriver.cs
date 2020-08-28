@@ -130,32 +130,136 @@ namespace ICUEDriver
 
                     if (channelsInfo.channelsCount > 0)
                     {
-                        //for (int channel = 0; channel < channelsInfo.channelsCount; channel++)
-                        //{
-                        //    CorsairLedId referenceLed = GetChannelReferenceId(info.CorsairDeviceType, channel);
-                        //    if (referenceLed == CorsairLedId.Invalid) continue;
 
-                        //    _CorsairChannelInfo channelInfo = (_CorsairChannelInfo) Marshal.PtrToStructure(channelInfoPtr, typeof(_CorsairChannelInfo));
+                        for (int channel = 0; channel < channelsInfo.channelsCount; channel++)
+                        {
 
-                        //    int channelDeviceInfoStructSize = Marshal.SizeOf(typeof(_CorsairChannelDeviceInfo));
-                        //    IntPtr channelDeviceInfoPtr = channelInfo.devices;
+                            _CorsairChannelInfo channelInfo = (_CorsairChannelInfo)Marshal.PtrToStructure(channelInfoPtr, typeof(_CorsairChannelInfo));
 
-                        //    if (channelInfo.devicesCount > 0)
-                        //    {
-                        //        for (int ddd = 0; ddd < channelInfo.devicesCount; ddd++)
-                        //        {
-                        //            _CorsairChannelDeviceInfo channelDeviceInfo =
-                        //                (_CorsairChannelDeviceInfo) Marshal.PtrToStructure(channelDeviceInfoPtr,
-                        //                    typeof(_CorsairChannelDeviceInfo));
-                        //            channelDeviceInfoPtr =
-                        //                new IntPtr(channelDeviceInfoPtr.ToInt64() + channelDeviceInfoStructSize);
+                            int channelDeviceInfoStructSize = Marshal.SizeOf(typeof(_CorsairChannelDeviceInfo));
+                            IntPtr channelDeviceInfoPtr = channelInfo.devices;
 
-                        //            int leds = channelDeviceInfo.deviceLedCount;
+                            for (int dev = 0; dev < channelInfo.devicesCount; dev++)
+                            {
+                                _CorsairChannelDeviceInfo channelDeviceInfo = (_CorsairChannelDeviceInfo)Marshal.PtrToStructure(channelDeviceInfoPtr, typeof(_CorsairChannelDeviceInfo));
 
-                        //            Debug.WriteLine(leds + " leds");
-                        //        }
-                        //    }
-                        //}
+                                CorsairLedId channelReferenceLed = GetChannelReferenceId(info.CorsairDeviceType, channel);
+                                CorsairLedId referenceLed = channelReferenceLed + (dev * channelDeviceInfo.deviceLedCount);
+
+                                List<ControlDevice.LedUnit> leds = new List<ControlDevice.LedUnit>();
+
+                                string subDeviceName = "Invalid";
+                                string subDeviceType = DeviceTypes.Other;
+
+                                switch (channelDeviceInfo.type)
+                                {
+                                    case CorsairChannelDeviceType.Invalid:
+                                        subDeviceName = "Unknown";
+                                        subDeviceType = DeviceTypes.Other;
+                                        break;
+                                    case CorsairChannelDeviceType.FanHD:
+                                        subDeviceName = "HD Fan";
+                                        subDeviceType = DeviceTypes.Fan;
+                                        break;
+                                    case CorsairChannelDeviceType.FanSP:
+                                        subDeviceName = "SP Fan";
+                                        subDeviceType = DeviceTypes.Fan;
+                                        break;
+                                    case CorsairChannelDeviceType.FanML:
+                                        subDeviceName = "ML Fan";
+                                        subDeviceType = DeviceTypes.Fan;
+                                        break;
+                                    case CorsairChannelDeviceType.FanLL:
+                                        subDeviceName = "LL Fan";
+                                        subDeviceType = DeviceTypes.Fan;
+                                        break;
+                                    case CorsairChannelDeviceType.Strip:
+                                        subDeviceName = "LED Strip";
+                                        subDeviceType = DeviceTypes.LedStrip;
+                                        break;
+                                    case CorsairChannelDeviceType.DAP:
+                                        subDeviceName = "Super-Secret DAP thingy";
+                                        subDeviceType = DeviceTypes.Other;
+                                        break;
+                                    case CorsairChannelDeviceType.FanQL:
+                                        subDeviceName = "QL Fan";
+                                        subDeviceType = DeviceTypes.Fan;
+                                        break;
+                                    default:
+                                         subDeviceName = "Unknown";
+                                        break;
+                                }
+
+                                CorsairDevice subDevice = new CorsairDevice
+                                {
+                                    Driver = this,
+                                    Name = subDeviceName + " " + (dev + 1).ToString(), //make device id start at 1 not 0 because normal people use this program
+                                    CorsairDeviceIndex = info.CorsairDeviceIndex,
+                                    DeviceType = subDeviceType
+                                };
+
+                                for (int devLed = 0; devLed < channelDeviceInfo.deviceLedCount; devLed++)
+                                {
+
+
+                                    //Fanman's ugly code for LED mapping. Abandon hope all ye who have to troublshoot this dumpster-fire of magic numbers.
+                                    CorsairLedId corsairLedId;
+                                    if (channelDeviceInfo.deviceLedCount > 30)
+                                    {
+                                        if ((int)referenceLed > 369 && (int)referenceLed != 350 && (int)referenceLed != 384 && (int)referenceLed != 418 && (int)referenceLed != 452 && (int)referenceLed != 486)
+                                        {
+                                            corsairLedId = referenceLed + 562 + devLed;
+                                        }
+                                        else if ((int)referenceLed > 335 && (int)referenceLed != 350 && (int)referenceLed != 384 && (int)referenceLed != 418 && (int)referenceLed != 452 && (int)referenceLed != 486)
+                                        {
+                                            if (devLed < 14)
+                                            {
+                                                corsairLedId = referenceLed + devLed;
+                                            }
+                                            else
+                                            {
+                                                corsairLedId = referenceLed + 562 + devLed;
+                                            }
+                                        }
+                                        //ch2
+                                        else if ((int)referenceLed >= 486)
+                                        {
+                                            if (devLed < 14)
+                                            {
+                                                corsairLedId = referenceLed + devLed;
+                                            }
+                                            else
+                                            {
+                                                corsairLedId = referenceLed + 562 + devLed;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            corsairLedId = referenceLed + devLed;
+                                        }
+
+                                    } else
+                                    {
+                                        corsairLedId = referenceLed + devLed;
+                                    }
+                                     
+
+
+                                    leds.Add(new ControlDevice.LedUnit()
+                                    {
+                                        Data = new CorsairLedData
+                                        {
+                                            LEDNumber = devLed,
+                                            CorsairLedId = (int) corsairLedId
+
+                                        },
+                                        LEDName = device.Name + " " + devLed  
+                                    });
+                                }
+                                subDevice.LEDs = leds.ToArray();
+                                devices.Add(subDevice);
+                            }
+                        }
                     }
                     else
                     {
@@ -189,8 +293,14 @@ namespace ICUEDriver
                         device.LEDs = leds.ToArray();
 
                     }
-
-                    devices.Add(device);
+                    if(info.CorsairDeviceType == CorsairDeviceType.CommanderPro || info.CorsairDeviceType == CorsairDeviceType.LightningNodePro) //filter out pointless devices
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        devices.Add(device);
+                    }
                 }
 
             }
@@ -209,6 +319,8 @@ namespace ICUEDriver
                 case CorsairDeviceType.HeadsetStand: return DeviceTypes.HeadsetStand;
                 case CorsairDeviceType.Keyboard: return DeviceTypes.Keyboard;
                 case CorsairDeviceType.MemoryModule: return DeviceTypes.Memory;
+                case CorsairDeviceType.Motherboard: return DeviceTypes.MotherBoard;
+                case CorsairDeviceType.GraphicsCard: return DeviceTypes.GPU;
                 case CorsairDeviceType.Unknown:
                     return DeviceTypes.Other;
                 case CorsairDeviceType.Mouse:
