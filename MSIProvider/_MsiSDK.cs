@@ -223,11 +223,17 @@ namespace MSIProvider
             {
                 result = _getDeviceInfoPointerInt(out pDevType, out int[] ledCountInt);
 
-                pLedCount = new int[ledCount.Length];
+                if (ledCount != null)
+                {
+                    pLedCount = new int[ledCount.Length];
 
-                for (int i = 0; i < ledCount.Length; i++)
-                    pLedCount[i] = int.Parse(ledCount[i]);
-
+                    for (int i = 0; i < ledCount.Length; i++)
+                        pLedCount[i] = int.Parse(ledCount[i]);
+                }
+                else
+                {
+                    pLedCount= new int[0];
+                }
 
 
                 return result;

@@ -26,5 +26,13 @@ namespace MadLedFrameworkSDK
             return controlDevices;
         }
 
+        public void Init()
+        {
+            foreach (var simpleLedDriver in Drivers)
+            {
+                simpleLedDriver.Configure(null);
+            }
+        }
+
     }
 }

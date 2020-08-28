@@ -74,7 +74,13 @@ namespace MadLedFrameworkSDK
 
         public void Push()
         {
-            Driver.Push(this);
+            try
+            {
+                Driver.Push(this);
+            }
+            catch
+            {
+            }
         }
 
         public void Pull()
