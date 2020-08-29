@@ -126,6 +126,7 @@ namespace ICUEDriver
         FanML = 4,
         Strip = 5,
         DAP = 6,
-        Pump = 7
+        Pump = 7,
+        FanQL = 8
     };
 }
