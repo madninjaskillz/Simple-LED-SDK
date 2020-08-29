@@ -16,6 +16,7 @@ namespace MadLedFrameworkSDK
         public LedUnit[] LEDs { get; set; }
         public int LedShift { get; set; } = 0;
         public bool Reverse { get; set; } = false;
+        public Bitmap ProductImage { get; set; } = null;
         public void MapLEDs(ControlDevice otherDevice)
         {
 

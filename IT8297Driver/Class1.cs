@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -10,6 +11,9 @@ using System.Threading.Tasks;
 using HidSharp;
 using MadLedFrameworkSDK;
 using DeviceTypes = MadLedFrameworkSDK.DeviceTypes;
+using System.IO;
+using System.Reflection;
+
 
 namespace IT8297Driver
 {
@@ -135,6 +139,27 @@ namespace IT8297Driver
                 return new List<ControlDevice>();
             }
 
+            Bitmap pcieArea;
+            Bitmap rgbPins;
+            Bitmap vrm;
+
+            Assembly myAssembly = Assembly.GetExecutingAssembly();
+            using (Stream myStream = myAssembly.GetManifestResourceStream("IT8297Driver.PCIArea.png"))
+            {
+                pcieArea = (Bitmap)Image.FromStream(myStream);
+            }
+
+            using (Stream myStream = myAssembly.GetManifestResourceStream("IT8297Driver.rgbpins.png"))
+            {
+                rgbPins = (Bitmap)Image.FromStream(myStream);
+            }
+
+            using (Stream myStream = myAssembly.GetManifestResourceStream("IT8297Driver.VRM.png"))
+            {
+                vrm = (Bitmap)Image.FromStream(myStream);
+            }
+
+
             byte[] buffer = new byte[64];
             buffer[0] = 0xCC;
             stream.GetFeature(buffer);
@@ -152,7 +177,7 @@ namespace IT8297Driver
                 Driver = this,
                 DeviceType = DeviceTypes.Fan,
                 Name = "ARGB Header 1",
-
+                ProductImage = rgbPins
             });
 
 
@@ -162,7 +187,7 @@ namespace IT8297Driver
                 Driver = this,
                 DeviceType = DeviceTypes.Fan,
                 Name = "ARGB Header 2",
-
+                ProductImage = rgbPins
             });
 
 
@@ -172,7 +197,7 @@ namespace IT8297Driver
                 Driver = this,
                 DeviceType = DeviceTypes.MotherBoard,
                 Name = "VRM Block",
-
+                ProductImage = vrm
             });
 
 
@@ -181,8 +206,8 @@ namespace IT8297Driver
                 LEDs = pciLeds,
                 Driver = this,
                 DeviceType = DeviceTypes.MotherBoard,
-                Name = "PCI area"
-
+                Name = "PCI area",
+                ProductImage = pcieArea
             });
 
             return result;
