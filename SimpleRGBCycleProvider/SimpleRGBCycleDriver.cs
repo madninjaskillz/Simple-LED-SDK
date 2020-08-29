@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -136,6 +139,22 @@ namespace SimpleRGBCycleProvider
 
         public List<ControlDevice> GetDevices()
         {
+
+            Bitmap prop;
+            Bitmap rgb;
+
+            Assembly myAssembly = Assembly.GetExecutingAssembly();
+            using (Stream myStream = myAssembly.GetManifestResourceStream("SimpleRGBCycleProvider.prop.png"))
+            {
+                prop = (Bitmap)Image.FromStream(myStream);
+            }
+
+            using (Stream myStream = myAssembly.GetManifestResourceStream("SimpleRGBCycleProvider.rgbcycle.png"))
+            {
+                rgb = (Bitmap)Image.FromStream(myStream);
+            }
+
+
             return new List<ControlDevice>
             {
                 new ControlDevice
@@ -143,21 +162,24 @@ namespace SimpleRGBCycleProvider
                     Name = "Simple RGB Cycler",
                     Driver = this,
                     LEDs = leds,
-                    DeviceType = DeviceTypes.Effect
+                    DeviceType = DeviceTypes.Effect,
+                    ProductImage = rgb
                 },
                 new ControlDevice
                 {
                     Name = "Simple Purple Propella",
                     Driver = this,
                     LEDs = fanLeds,
-                    DeviceType = DeviceTypes.Effect
+                    DeviceType = DeviceTypes.Effect,
+                    ProductImage = prop
                 },
                 new ControlDevice
                 {
                     Name = "Simple RGB Propella",
                     Driver = this,
                     LEDs = fanLeds2,
-                    DeviceType = DeviceTypes.Effect
+                    DeviceType = DeviceTypes.Effect,
+                    ProductImage = prop
                 }
             };
 
