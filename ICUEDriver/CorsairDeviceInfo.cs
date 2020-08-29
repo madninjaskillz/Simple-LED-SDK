@@ -60,7 +60,10 @@ namespace ICUEDriver
         CommanderPro = 6,
         LightningNodePro = 7,
         MemoryModule = 8,
-        Cooler = 9
+        Cooler = 9,
+        Unknown2 = 10,
+        Motherboard = 11,
+        GraphicsCard = 12
     };
 
     // ReSharper disable once InconsistentNaming
