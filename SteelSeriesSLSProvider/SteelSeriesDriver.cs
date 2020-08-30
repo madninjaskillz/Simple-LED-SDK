@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Management;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using HidSharp;
@@ -23,30 +25,42 @@ namespace SteelSeriesSLSProvider
             public string Name { get; set; }
             public int NumberOfLeds { get; set; }
             public string DeviceClass { get; set; }
-            public SteelSeriesHIDDevice(int pid, string name, string deviceClass, int leds)
+            public Bitmap Image { get; set; }
+            public SteelSeriesHIDDevice(int pid, string name, string deviceClass, int leds,string image)
             {
                 PID = pid;
                 Name = name;
                 DeviceClass = deviceClass;
                 NumberOfLeds = leds;
+
+                Bitmap arctis5;
+
+                Assembly myAssembly = Assembly.GetExecutingAssembly();
+                using (Stream myStream = myAssembly.GetManifestResourceStream("SteelSeriesSLSProvider."+image+".png"))
+                {
+                    if (myStream != null)
+                    {
+                        Image = (Bitmap) System.Drawing.Image.FromStream(myStream);
+                    }
+                }
             }
         }
 
         private static List<SteelSeriesHIDDevice> HIDDevices = new List<SteelSeriesHIDDevice>
         {
-            new SteelSeriesHIDDevice( 0x1250 , "SteelSeries Arctis 5 Game", DeviceTypes.Headset ,1),
-            new SteelSeriesHIDDevice( 0x1251 , "SteelSeries Arctis 5 Game - Dota 2 edition", DeviceTypes.Headset ,1),
-            new SteelSeriesHIDDevice( 0x1252 , "SteelSeries Arctis Pro Game", DeviceTypes.Headset ,1),
-            new SteelSeriesHIDDevice(0x1260, "Arctis 7 Game", DeviceTypes.Headset, 0),
-            new SteelSeriesHIDDevice(0x1290, "Arctis Pro Wireless", DeviceTypes.Headset, 0),
-            new SteelSeriesHIDDevice(0x1294, "Arctis Pro Wireless Game", DeviceTypes.Headset, 0),
-            new SteelSeriesHIDDevice(0x12A8, "Arctis 5 Game - PUBG edition", DeviceTypes.Headset, 1),
-            new SteelSeriesHIDDevice(0x12AA, "Arctis 5 Game - 2018 edition", DeviceTypes.Headset, 1),
-            new SteelSeriesHIDDevice(0x12AD, "Arctis 7 Game - 2018 edition", DeviceTypes.Headset, 1),
+            new SteelSeriesHIDDevice( 0x1250 , "SteelSeries Arctis 5 Game", DeviceTypes.Headset ,1,"arctis5"),
+            new SteelSeriesHIDDevice( 0x1251 , "SteelSeries Arctis 5 Game - Dota 2 edition", DeviceTypes.Headset ,1,"arctis5"),
+            new SteelSeriesHIDDevice( 0x1252 , "SteelSeries Arctis Pro Game", DeviceTypes.Headset ,1,"arctis5"),
+            new SteelSeriesHIDDevice(0x1260, "Arctis 7 Game", DeviceTypes.Headset, 0,"arctis7"),
+            new SteelSeriesHIDDevice(0x1290, "Arctis Pro Wireless", DeviceTypes.Headset, 0,"arctispro"),
+            new SteelSeriesHIDDevice(0x1294, "Arctis Pro Wireless Game", DeviceTypes.Headset, 0,"arctispro"),
+            new SteelSeriesHIDDevice(0x12A8, "Arctis 5 Game - PUBG edition", DeviceTypes.Headset, 1,"arctis5"),
+            new SteelSeriesHIDDevice(0x12AA, "Arctis 5 Game - 2018 edition", DeviceTypes.Headset, 1,"arctis5"),
+            new SteelSeriesHIDDevice(0x12AD, "Arctis 7 Game - 2018 edition", DeviceTypes.Headset, 1,"arctis7"),
             
-            new SteelSeriesHIDDevice(0x1618, "APEX 7 TKL", DeviceTypes.Keyboard, 84),
+            new SteelSeriesHIDDevice(0x1618, "APEX 7 TKL", DeviceTypes.Keyboard, 84,"apex7tkl"),
 
-            new SteelSeriesHIDDevice(0x1824, "Rival 3",DeviceTypes.Mouse,3)
+            new SteelSeriesHIDDevice(0x1824, "Rival 3",DeviceTypes.Mouse,3,"rival3")
         };
 
         public SteelSeries.GameSenseSDK.GameSenseSDK GameSenseSdk = new GameSenseSDK();
@@ -106,6 +120,8 @@ namespace SteelSeriesSLSProvider
 
         public List<ControlDevice> GetDevices()
         {
+            
+
             var devices = DeviceList.Local.GetHidDevices(VENDOR_ID);
             var result = new List<ControlDevice>();
             string output = "";
@@ -122,6 +138,8 @@ namespace SteelSeriesSLSProvider
             {
                 try
                 {
+                    Bitmap img = null;
+                    
                     // var r = USBClass.GetUSBDevice((uint)hidDevice.VendorID, (uint)hidDevice.ProductID);
                     var related = usbDevices.Where(t => t.VEN == "1038").ToList();
                     Debug.WriteLine(usbDevices);
@@ -150,6 +168,7 @@ namespace SteelSeriesSLSProvider
                         deviceType = hid.DeviceClass;
                         numberOfLeds = hid.NumberOfLeds;
                         name = hid.Name;
+                        img = hid.Image;
                     }
 
                     int pid = hidDevice.ProductID;
@@ -181,8 +200,8 @@ namespace SteelSeriesSLSProvider
                         LEDs = new ControlDevice.LedUnit[numberOfLeds],
                         Driver = this,
                         Name = name,
-                        DeviceType = deviceType
-
+                        DeviceType = deviceType,
+                        ProductImage = img
                     };
 
                     if (deviceType == DeviceTypes.Keyboard)

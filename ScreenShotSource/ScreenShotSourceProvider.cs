@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -57,11 +59,11 @@ namespace ScreenShotSource
         }
         private Timer timer;
         ControlDevice.LedUnit[] fullLeds = new ControlDevice.LedUnit[122];
-        ControlDevice.LedUnit[] ringLeds = new ControlDevice.LedUnit[46];
+        ControlDevice.LedUnit[] ringLeds = new ControlDevice.LedUnit[49];
         ControlDevice.LedUnit[] oneLeds = new ControlDevice.LedUnit[1];
         public void Dispose()
         {
-            
+
         }
 
         public void Configure(DriverDetails driverDetails)
@@ -109,6 +111,15 @@ namespace ScreenShotSource
 
         public List<ControlDevice> GetDevices()
         {
+
+            Bitmap prop;
+
+            Assembly myAssembly = Assembly.GetExecutingAssembly();
+            using (Stream myStream = myAssembly.GetManifestResourceStream("ScreenShotSource.monitor.png"))
+            {
+                prop = (Bitmap)Image.FromStream(myStream);
+            }
+
             return new List<ControlDevice>
             {
                 new ControlDevice
@@ -116,28 +127,31 @@ namespace ScreenShotSource
                     Name = "Screenshot Source Full",
                     Driver = this,
                     LEDs = fullLeds,
-                    DeviceType = DeviceTypes.Effect
+                    DeviceType = DeviceTypes.Effect,
+                    ProductImage = prop
                 },
                 new ControlDevice
                 {
                     Name = "Screenshot Source Ring",
                     Driver = this,
                     LEDs = ringLeds,
-                    DeviceType = DeviceTypes.Effect
+                    DeviceType = DeviceTypes.Effect,
+                    ProductImage = prop
                 },
                 new ControlDevice
                 {
                     Name = "Screenshot Source Pixel",
                     Driver = this,
                     LEDs = oneLeds,
-                    DeviceType = DeviceTypes.Effect
+                    DeviceType = DeviceTypes.Effect,
+                    ProductImage = prop
                 }
             };
         }
 
         public void Push(ControlDevice controlDevice)
         {
-            
+
         }
 
         private bool locked = false;
@@ -157,14 +171,14 @@ namespace ScreenShotSource
                 int bppModifier = bm.PixelFormat == System.Drawing.Imaging.PixelFormat.Format24bppRgb ? 3 : 4; // cutting corners, will fail on anything else but 32 and 24 bit images
                 BitmapData srcData = bm.LockBits(new System.Drawing.Rectangle(0, 0, bm.Width, bm.Height),
                     ImageLockMode.ReadOnly, bm.PixelFormat);
-                
+
                 int stride = srcData.Stride;
                 IntPtr Scan0 = srcData.Scan0;
                 int ringptr = 0;
                 int fullptr = 0;
                 unsafe
                 {
-                    byte* p = (byte*) (void*) Scan0;
+                    byte* p = (byte*)(void*)Scan0;
 
 
                     //full ++ pixel
@@ -196,7 +210,7 @@ namespace ScreenShotSource
                     }
 
                     //ring
-                    for (int x = 0; x < width; x++)
+                    for (int x = 0; x < 20; x++)
                     {
                         int idx = (0 * stride) + x * bppModifier;
                         red = p[idx + 2];
@@ -207,9 +221,9 @@ namespace ScreenShotSource
                         ringptr++;
                     }
 
-                    for (int y = 1; y < height-1; y++)
+                    for (int y = 1; y < 6 - 1; y++)
                     {
-                        int x = width-1;
+                        int x = width - 1;
                         int idx = (0 * stride) + x * bppModifier;
                         red = p[idx + 2];
                         green = p[idx + 1];
@@ -219,7 +233,7 @@ namespace ScreenShotSource
                         ringptr++;
                     }
 
-                    for (int x = width-1; x >= 0; x--)
+                    for (int x = 20 - 1; x >= 0; x--)
                     {
                         int y = height - 1;
                         int idx = (y * stride) + x * bppModifier;
@@ -231,7 +245,7 @@ namespace ScreenShotSource
                         ringptr++;
                     }
 
-                    for (int y = height-1; y > 0; y--)
+                    for (int y = 6 - 1; y > 0; y--)
                     {
                         int x = 0;
                         int idx = (0 * stride) + x * bppModifier;
@@ -251,9 +265,9 @@ namespace ScreenShotSource
                     return Color.Black;
                 }
 
-                int avgR = (int) (totals[2] / count);
-                int avgG = (int) (totals[1] / count);
-                int avgB = (int) (totals[0] / count);
+                int avgR = (int)(totals[2] / count);
+                int avgG = (int)(totals[1] / count);
+                int avgB = (int)(totals[0] / count);
                 bm.UnlockBits(srcData);
                 locked = false;
                 return System.Drawing.Color.FromArgb(avgR, avgG, avgB);
@@ -281,7 +295,7 @@ namespace ScreenShotSource
 
         private void TakingScreenshotEx2()
         {
-            try
+            if (!locked)
             {
                 int screenWidth = Screen.PrimaryScreen.Bounds.Width;
                 int screenHeight = Screen.PrimaryScreen.Bounds.Height;
@@ -305,14 +319,11 @@ namespace ScreenShotSource
                 g.ReleaseHdc(dc2);
                 g.Dispose();
 
-                scaledScreenshot = new Bitmap(screenshot, new Size(20, 6));
-            }
-            catch
-            {
+                // scaledScreenshot = new Bitmap(screenshot, new Size(20, 6));
             }
         }
 
-        private Bitmap scaledScreenshot = null;
+        // private Bitmap scaledScreenshot = null;
         private Bitmap screenshot = null;
         DateTime lastScreenShot = DateTime.MinValue;
         public void Pull(ControlDevice controlDevice)
@@ -322,8 +333,8 @@ namespace ScreenShotSource
                 TakingScreenshotEx2();
                 Color avg = CalculateAverageColor(screenshot);
                 oneLeds[0].Color = new LEDColor(avg);
-                lastScreenShot=DateTime.Now;
-                
+                lastScreenShot = DateTime.Now;
+
             }
         }
 
@@ -331,48 +342,48 @@ namespace ScreenShotSource
         private int olc = 0;
         private void TimerCallback(object state)
         {
-            if (!atIt)
-            {
-                atIt = true;
-                if (!locked)
-                {
-                    if ((DateTime.Now - lastScreenShot).TotalMilliseconds > 30)
-                    {
-                        lastScreenShot = DateTime.Now;
-                        try
-                        {
-                            TakingScreenshotEx2();
-                            Color avg = CalculateAverageColor(scaledScreenshot);
-                            oneLeds[0].Color = new LEDColor(avg);
+            //    if (!atIt)
+            //    {
+            //        atIt = true;
+            //        if (!locked)
+            //        {
+            //            if ((DateTime.Now - lastScreenShot).TotalMilliseconds > 30)
+            //            {
+            //                lastScreenShot = DateTime.Now;
+            //                try
+            //                {
+            //                    TakingScreenshotEx2();
+            //                    Color avg = CalculateAverageColor(scaledScreenshot);
+            //                    oneLeds[0].Color = new LEDColor(avg);
 
-                        }
-                        catch
-                        {
-                        }
+            //                }
+            //                catch
+            //                {
+            //                }
 
-                    }
+            //            }
 
-                    olc = 0;
-                }
-                else
-                {
-                    olc++;
-                    if (olc > 60)
-                    {
-                        olc = 0;
-                        locked = false;
-                    }
-                }
+            //            olc = 0;
+            //        }
+            //        else
+            //        {
+            //            olc++;
+            //            if (olc > 60)
+            //            {
+            //                olc = 0;
+            //                locked = false;
+            //            }
+            //        }
 
-                atIt = false;
-            }
+            //        atIt = false;
+            //    }
         }
 
         public DriverProperties GetProperties()
         {
             return new DriverProperties
             {
-                SupportsPull = false,
+                SupportsPull = true,
                 SupportsPush = false,
                 IsSource = true
             };

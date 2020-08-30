@@ -55,6 +55,11 @@ namespace MadLedSDK
             {
                 foreach (var t in devices.Where(xx => xx.Driver.GetProperties().SupportsPush && xx.LEDs != null && xx.LEDs.Length > 0))
                 {
+                    if (cycleFan.Driver.GetProperties().SupportsPull)
+                    {
+                        cycleFan.Pull();
+                    }
+
                     t.MapLEDs(cycleFan);
                     t.Push();
                 }
@@ -69,6 +74,7 @@ namespace MadLedSDK
                 {
                     return;
                 }
+
                 cycleFan = driv[int.Parse(derp)]; //devices.First(xx => xx.Name == "Simple RGB Cycler");
 
             }

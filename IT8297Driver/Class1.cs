@@ -255,7 +255,7 @@ namespace IT8297Driver
 
         public string Name()
         {
-            return "IT8297 Provider";
+            return "Aorus Motherboard";
         }
 
 

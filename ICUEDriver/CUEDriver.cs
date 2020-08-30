@@ -112,8 +112,8 @@ namespace ICUEDriver
                     positions.Add(ledPosition);
                 }
 
-                Debug.WriteLine(info.CorsairDeviceType);
-
+                Debug.WriteLine(info.DeviceName);
+                Debug.WriteLine("https://www.corsair.com/corsairmedia/sys_master/productcontent/drivers_"+info.DeviceName.Replace(" ","-")+".jpg");
                 CorsairDevice device = new CorsairDevice
                 {
                     Driver = this,
