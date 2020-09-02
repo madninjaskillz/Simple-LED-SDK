@@ -23,6 +23,17 @@ namespace RainbowWave
 
 		public RainbowWaveConfigModel configModel = new RainbowWaveConfigModel();
 
+
+        public bool GetIsDirty()
+        {
+            return configModel.DataIsDirty;
+        }
+
+        public void SetIsDirty(bool val)
+        {
+            configModel.DataIsDirty = val;
+        }
+
 		// Token: 0x06000001 RID: 1 RVA: 0x00002050 File Offset: 0x00000250
 		public RainbowWaveDriver()
 		{

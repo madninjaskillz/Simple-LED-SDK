@@ -14,7 +14,11 @@ namespace RainbowWave
         public int Speed
         {
             get => speed;
-            set => SetProperty(ref speed, value);
+            set
+            {
+                SetProperty(ref speed, value);
+                DataIsDirty = true;
+            }
         }
 
         private ControlDevice controlDevice;

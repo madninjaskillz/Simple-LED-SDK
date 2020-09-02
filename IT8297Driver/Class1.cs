@@ -277,6 +277,16 @@ namespace IT8297Driver
             return new CustomConfig();
         }
 
+        public bool GetIsDirty()
+        {
+            return false;
+        }
+
+        public void SetIsDirty(bool val)
+        {
+            
+        }
+
         public string Name()
         {
             return "Aorus Motherboard";

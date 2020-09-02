@@ -8,7 +8,7 @@ namespace MadLedFrameworkSDK
 {
     public class SLSConfigData : BaseViewModel
     {
-
+        public bool DataIsDirty { get; set; }
     }
 }
 

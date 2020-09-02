@@ -22,6 +22,8 @@ namespace MadLedFrameworkSDK
     public interface ISimpleLEDDriverWithConfig : ISimpleLEDDriver
     {
         UserControl GetCustomConfig(ControlDevice controlDevice);
+        bool GetIsDirty();
+        void SetIsDirty(bool val);
     }
 
     public class DriverProperties
