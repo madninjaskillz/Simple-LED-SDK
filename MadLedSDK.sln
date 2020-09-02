@@ -29,6 +29,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IT8297Driver", "IT8297Drive
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CorsairH100iProvider", "CorsairH100iProvider\CorsairH100iProvider.csproj", "{50515802-6FB8-44D1-A414-DD6FE7C479A0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RainbowWave", "RainbowWave\RainbowWave.csproj", "{28F86E3C-9F50-4F2F-8486-1FB906990C25}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -79,6 +81,10 @@ Global
 		{50515802-6FB8-44D1-A414-DD6FE7C479A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{50515802-6FB8-44D1-A414-DD6FE7C479A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{50515802-6FB8-44D1-A414-DD6FE7C479A0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{28F86E3C-9F50-4F2F-8486-1FB906990C25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{28F86E3C-9F50-4F2F-8486-1FB906990C25}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{28F86E3C-9F50-4F2F-8486-1FB906990C25}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{28F86E3C-9F50-4F2F-8486-1FB906990C25}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -94,6 +100,7 @@ Global
 		{1147B007-13A8-487F-9A2C-8A65A1CBA357} = {94291A32-34A9-4545-93E4-A8AD25C19DEE}
 		{20ED218B-964F-4C44-A4C1-2A5978FA7C3C} = {94291A32-34A9-4545-93E4-A8AD25C19DEE}
 		{50515802-6FB8-44D1-A414-DD6FE7C479A0} = {94291A32-34A9-4545-93E4-A8AD25C19DEE}
+		{28F86E3C-9F50-4F2F-8486-1FB906990C25} = {94291A32-34A9-4545-93E4-A8AD25C19DEE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {13AEE829-92AB-4F9F-84BA-36654FF44E5B}

@@ -21,7 +21,7 @@ namespace MadLedFrameworkSDK
 
     public interface ISimpleLEDDriverWithConfig : ISimpleLEDDriver
     {
-        UserControl GetCustomConfig();
+        UserControl GetCustomConfig(ControlDevice controlDevice);
     }
 
     public class DriverProperties

@@ -272,7 +272,7 @@ namespace IT8297Driver
             Debug.WriteLine(proxy);
         }
 
-        public UserControl GetCustomConfig()
+        public UserControl GetCustomConfig(ControlDevice controlDevice)
         {
             return new CustomConfig();
         }
