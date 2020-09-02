@@ -14,6 +14,16 @@ namespace SimpleRGBCycleProvider
     public class SimpleRGBCycleDriver : ISimpleLEDDriver
     {
 
+        public T GetConfig<T>() where T : SLSConfigData
+        {
+            //TODO throw new NotImplementedException();
+            return null;
+        }
+
+        public void PutConfig<T>(T config) where T : SLSConfigData
+        {
+            //TODO throw new NotImplementedException();
+        }
         public string Name()
         {
             return "Cycle Driver";
@@ -201,7 +211,8 @@ namespace SimpleRGBCycleProvider
             {
                 SupportsPull = false,
                 SupportsPush = false,
-                IsSource = true
+                IsSource = true,
+                Id = Guid.Parse("a9440d02-8ca3-4e35-a9a3-88b024cc0e2d")
             };
         }
 

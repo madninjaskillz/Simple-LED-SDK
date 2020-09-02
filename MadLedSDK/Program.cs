@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -21,10 +22,15 @@ namespace MadLedSDK
     {
         static void Main(string[] args)
         {
+            try
+            {
+                Directory.CreateDirectory("SLSConfigs");
+            }
+            catch
+            {
+            }
 
-
-
-            SLSManager ledManager = new SLSManager();
+            SLSManager ledManager = new SLSManager("SLSConfigs");
             ledManager.Drivers.Add(new IT8296Provider());
             //ledManager.Drivers.Add(new SteelSeriesDriver());
             ledManager.Drivers.Add(new SimpleRGBCycleDriver());
@@ -45,38 +51,55 @@ namespace MadLedSDK
                 ct++;
             }
 
-            Console.WriteLine("Type Source Number");
-            string derp = Console.ReadLine();
+            //Console.WriteLine("Type Source Number");
+            //string derp = Console.ReadLine();
 
+            string derp = "";
+            ControlDevice cycleFan = null;
 
-
-            ControlDevice cycleFan = driv[int.Parse(derp)]; //devices.First(xx => xx.Name == "Simple RGB Cycler");
+            //ControlDevice cycleFan = driv[int.Parse(derp)]; //devices.First(xx => xx.Name == "Simple RGB Cycler");
 
             var timer = new Timer((state) =>
             {
-                foreach (var t in devices.Where(xx => xx.Driver.GetProperties().SupportsPush && xx.LEDs != null && xx.LEDs.Length > 0))
+                if (cycleFan != null)
                 {
-                    if (cycleFan.Driver.GetProperties().SupportsPull)
+                    foreach (var t in devices.Where(xx =>
+                        xx.Driver.GetProperties().SupportsPush && xx.LEDs != null && xx.LEDs.Length > 0))
                     {
-                        cycleFan.Pull();
-                    }
+                        if (cycleFan.Driver.GetProperties().SupportsPull)
+                        {
+                            cycleFan.Pull();
+                        }
 
-                    t.MapLEDs(cycleFan);
-                    t.Push();
+                        t.MapLEDs(cycleFan);
+                        t.Push();
+                    }
                 }
 
             }, null, 0, 33);
 
             while (true)
             {
-                Console.WriteLine("Type Source Number (Q TO QUIT)");
+                Console.WriteLine("Type Source Number (Q TO QUIT, S TO SAVE CFG, L TO LOAD CFG)");
                 derp = Console.ReadLine();
                 if (derp.ToUpper() == "Q")
                 {
                     return;
                 }
 
-                cycleFan = driv[int.Parse(derp)]; //devices.First(xx => xx.Name == "Simple RGB Cycler");
+                if (derp.ToUpper() == "S")
+                {
+                    ledManager.SaveConfigs();
+                }
+
+                else if (derp.ToUpper() == "L")
+                {
+                    ledManager.LoadConfigs();
+                }
+                else
+                {
+                    cycleFan = driv[int.Parse(derp)]; //devices.First(xx => xx.Name == "Simple RGB Cycler");
+                }
 
             }
             

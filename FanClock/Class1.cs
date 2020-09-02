@@ -11,6 +11,18 @@ namespace FanClock
 {
     public class FanClockDriver : ISimpleLEDDriver
     {
+
+        public T GetConfig<T>() where T : SLSConfigData
+        {
+            //TODO throw new NotImplementedException();
+            return null;
+        }
+
+        public void PutConfig<T>(T config) where T : SLSConfigData
+        {
+            //TODO throw new NotImplementedException();
+        }
+
         private const int LEDCount = 60;
         private Timer timer;
         private int currentPos = 0;
@@ -96,7 +108,8 @@ namespace FanClock
             {
                 SupportsPull = false,
                 SupportsPush = false,
-                IsSource = true
+                IsSource = true,
+                Id = Guid.Parse("69440d02-8ca3-4e35-a9a3-88b024cc0e2d")
             };
         }
 

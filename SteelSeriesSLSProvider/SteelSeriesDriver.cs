@@ -19,6 +19,17 @@ namespace SteelSeriesSLSProvider
 {
     public class SteelSeriesDriver : ISimpleLEDDriver
     {
+
+        public T GetConfig<T>() where T : SLSConfigData
+        {
+            //TODO throw new NotImplementedException();
+            return null;
+        }
+
+        public void PutConfig<T>(T config) where T : SLSConfigData
+        {
+            //TODO throw new NotImplementedException();
+        }
         public class SteelSeriesHIDDevice
         {
             public int PID { get; set; }
@@ -311,7 +322,8 @@ namespace SteelSeriesSLSProvider
             {
                 SupportsPush = true,
                 IsSource = false,
-                SupportsPull = false
+                SupportsPull = false,
+                Id = Guid.Parse("b9440d02-8ca3-4e35-a9a3-88b024cc0e2d")
             };
         }
 

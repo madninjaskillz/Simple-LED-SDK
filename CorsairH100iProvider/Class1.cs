@@ -9,6 +9,17 @@ namespace CorsairH100iProvider
 {
     public class CorsairH100iProvider : ISimpleLEDDriver
     {
+
+        public T GetConfig<T>() where T : SLSConfigData
+        {
+            //TODO throw new NotImplementedException();
+            return null;
+        }
+
+        public void PutConfig<T>(T config) where T : SLSConfigData
+        {
+            //TODO throw new NotImplementedException();
+        }
         public void Dispose()
         {
             

@@ -13,6 +13,18 @@ namespace MSIProvider
 {
     public class MSIDriver : ISimpleLEDDriver
     {
+
+        public T GetConfig<T>() where T : SLSConfigData
+        {
+            //TODO throw new NotImplementedException();
+            return null;
+        }
+
+        public void PutConfig<T>(T config) where T : SLSConfigData
+        {
+            //TODO throw new NotImplementedException();
+        }
+
         public string Name()
         {
             return "MSI";
@@ -150,7 +162,8 @@ namespace MSIProvider
             {
                 SupportsPull = false,
                 SupportsPush = true,
-                IsSource = false
+                IsSource = false,
+                Id = Guid.Parse("89440d02-8ca3-4e35-a9a3-88b024cc0e2d")
             };
         }
     }
