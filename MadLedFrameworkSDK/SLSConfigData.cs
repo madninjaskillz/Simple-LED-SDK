@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace MadLedFrameworkSDK
 {
-    public class SLSConfigData
+    public class SLSConfigData : BaseViewModel
     {
 
     }
 }
+

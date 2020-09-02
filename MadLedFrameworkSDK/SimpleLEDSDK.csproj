@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseViewModel.cs" />
     <Compile Include="DeviceTypes.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="ISimpleLEDDriver.cs" />
