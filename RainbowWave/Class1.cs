@@ -6,6 +6,7 @@ using System.Threading;
 using System.Drawing;
 using MadLedFrameworkSDK;
 using System.Windows.Controls;
+using Newtonsoft.Json;
 
 namespace RainbowWave
 {
@@ -20,7 +21,7 @@ namespace RainbowWave
 		public static Assembly assembly = Assembly.GetExecutingAssembly();
 		public static Stream imageStream = assembly.GetManifestResourceStream("RainbowWave.rainbowwave.png");
 
-
+		[JsonIgnore]
 		public RainbowWaveConfigModel configModel = new RainbowWaveConfigModel();
 
 

@@ -80,6 +80,7 @@ namespace MadLedFrameworkSDK
 
         public void SaveConfig(ISimpleLEDDriverWithConfig simpleLedDriver)
         {
+            simpleLedDriver.SetIsDirty(false);
             SLSConfigData data = simpleLedDriver.GetConfig<SLSConfigData>();
             string json = JsonConvert.SerializeObject(data, new JsonSerializerSettings
             {
