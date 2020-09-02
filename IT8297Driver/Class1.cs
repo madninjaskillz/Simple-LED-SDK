@@ -260,7 +260,7 @@ namespace IT8297Driver
 
         public UserControl GetCustomConfig()
         {
-            throw new NotImplementedException();
+            return new CustomConfig();
         }
 
         public string Name()

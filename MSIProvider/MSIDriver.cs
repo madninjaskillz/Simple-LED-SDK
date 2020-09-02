@@ -141,7 +141,7 @@ namespace MSIProvider
 
         public void Pull(ControlDevice controlDevice)
         {
-            throw new NotImplementedException();
+            
         }
 
         public DriverProperties GetProperties()

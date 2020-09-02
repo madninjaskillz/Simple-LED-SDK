@@ -28,7 +28,7 @@ namespace MadLedSDK
             ledManager.Drivers.Add(new IT8296Provider());
             //ledManager.Drivers.Add(new SteelSeriesDriver());
             ledManager.Drivers.Add(new SimpleRGBCycleDriver());
-            //ledManager.Drivers.Add(new MadLedDriver());
+            ledManager.Drivers.Add(new MadLedDriver());
             //ledManager.Drivers.Add(new MSIDriver());
             ledManager.Drivers.Add(new ScreenShotSourceProvider());
             //ledManager.Drivers.Add(new CUEDriver());
