@@ -13,11 +13,13 @@ using MadLedFrameworkSDK;
 using DeviceTypes = MadLedFrameworkSDK.DeviceTypes;
 using System.IO;
 using System.Reflection;
+using System.Windows.Controls;
+using Image = System.Drawing.Image;
 
 
 namespace IT8297Driver
 {
-    public class IT8296Provider : ISimpleLEDDriver
+    public class IT8296Provider : ISimpleLEDDriverWithConfig
     {
         HidStream stream = null;
 
@@ -177,7 +179,8 @@ namespace IT8297Driver
                 Driver = this,
                 DeviceType = DeviceTypes.Fan,
                 Name = "ARGB Header 1",
-                ProductImage = rgbPins
+                ProductImage = rgbPins,
+                SupportsLEDCountOverride = true
             });
 
 
@@ -187,7 +190,8 @@ namespace IT8297Driver
                 Driver = this,
                 DeviceType = DeviceTypes.Fan,
                 Name = "ARGB Header 2",
-                ProductImage = rgbPins
+                ProductImage = rgbPins,
+                SupportsLEDCountOverride = true
             });
 
 
@@ -249,8 +253,14 @@ namespace IT8297Driver
             {
                 SupportsPush = true,
                 IsSource = false,
-                SupportsPull = false
+                SupportsPull = false,
+                SupportsCustomConfig = true
             };
+        }
+
+        public UserControl GetCustomConfig()
+        {
+            throw new NotImplementedException();
         }
 
         public string Name()

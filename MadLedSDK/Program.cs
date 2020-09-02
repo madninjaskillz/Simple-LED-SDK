@@ -26,11 +26,12 @@ namespace MadLedSDK
 
             SLSManager ledManager = new SLSManager();
             ledManager.Drivers.Add(new IT8296Provider());
-            ledManager.Drivers.Add(new SteelSeriesDriver());
+            //ledManager.Drivers.Add(new SteelSeriesDriver());
             ledManager.Drivers.Add(new SimpleRGBCycleDriver());
             //ledManager.Drivers.Add(new MadLedDriver());
+            //ledManager.Drivers.Add(new MSIDriver());
             ledManager.Drivers.Add(new ScreenShotSourceProvider());
-            ledManager.Drivers.Add(new CUEDriver());
+            //ledManager.Drivers.Add(new CUEDriver());
             ledManager.Init();
             Console.WriteLine("Getting devices");
             List<ControlDevice> devices = ledManager.GetDevices();

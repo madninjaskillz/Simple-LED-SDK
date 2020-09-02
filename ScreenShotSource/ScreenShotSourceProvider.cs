@@ -12,6 +12,9 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using MadLedFrameworkSDK;
 using Timer = System.Threading.Timer;
+using System.Windows.Controls;
+using Image = System.Drawing.Image;
+using UserControl = System.Windows.Controls.UserControl;
 
 namespace ScreenShotSource
 {
@@ -59,7 +62,7 @@ namespace ScreenShotSource
         }
         private Timer timer;
         ControlDevice.LedUnit[] fullLeds = new ControlDevice.LedUnit[122];
-        ControlDevice.LedUnit[] ringLeds = new ControlDevice.LedUnit[49];
+        ControlDevice.LedUnit[] ringLeds = new ControlDevice.LedUnit[48];
         ControlDevice.LedUnit[] oneLeds = new ControlDevice.LedUnit[1];
         public void Dispose()
         {
@@ -221,7 +224,7 @@ namespace ScreenShotSource
                         ringptr++;
                     }
 
-                    for (int y = 1; y < 6 - 1; y++)
+                    for (int y = 1; y < 5; y++)
                     {
                         int x = width - 1;
                         int idx = (0 * stride) + x * bppModifier;
@@ -245,7 +248,7 @@ namespace ScreenShotSource
                         ringptr++;
                     }
 
-                    for (int y = 6 - 1; y > 0; y--)
+                    for (int y = 5; y > 1; y--)
                     {
                         int x = 0;
                         int idx = (0 * stride) + x * bppModifier;
@@ -293,19 +296,16 @@ namespace ScreenShotSource
             public static extern IntPtr GetDesktopWindow();
         }
 
-        private void TakingScreenshotEx2()
+        private Bitmap TakingScreenshotEx2()
         {
-            if (!locked)
+            try
             {
                 int screenWidth = Screen.PrimaryScreen.Bounds.Width;
                 int screenHeight = Screen.PrimaryScreen.Bounds.Height;
 
-                if (screenshot == null)
-                {
-                    screenshot = new Bitmap(screenWidth, screenHeight);
-                }
+                var _screenshot = new Bitmap(screenWidth, screenHeight);
 
-                Graphics g = Graphics.FromImage(screenshot);
+                Graphics g = Graphics.FromImage(_screenshot);
 
                 IntPtr dc1 = WinAPI.GetDC(WinAPI.GetDesktopWindow());
                 IntPtr dc2 = g.GetHdc();
@@ -318,22 +318,29 @@ namespace ScreenShotSource
                 WinAPI.ReleaseDC(WinAPI.GetDesktopWindow(), dc1);
                 g.ReleaseHdc(dc2);
                 g.Dispose();
-
-                // scaledScreenshot = new Bitmap(screenshot, new Size(20, 6));
+                var scaledScreenshot = new Bitmap(_screenshot, new Size(20, 6));
+                return scaledScreenshot;
+            }
+            catch
+            {
+                return null;
             }
         }
 
         // private Bitmap scaledScreenshot = null;
-        private Bitmap screenshot = null;
+        //private Bitmap screenshot = null;
         DateTime lastScreenShot = DateTime.MinValue;
         public void Pull(ControlDevice controlDevice)
         {
             if ((DateTime.Now - lastScreenShot).TotalMilliseconds > 30)
             {
-                TakingScreenshotEx2();
-                Color avg = CalculateAverageColor(screenshot);
-                oneLeds[0].Color = new LEDColor(avg);
-                lastScreenShot = DateTime.Now;
+                var _screenshot = TakingScreenshotEx2();
+                if (_screenshot != null)
+                {
+                    Color avg = CalculateAverageColor(_screenshot);
+                    oneLeds[0].Color = new LEDColor(avg);
+                    lastScreenShot = DateTime.Now;
+                }
 
             }
         }
@@ -387,6 +394,11 @@ namespace ScreenShotSource
                 SupportsPush = false,
                 IsSource = true
             };
+        }
+
+        public UserControl GetCustomConfig()
+        {
+            throw new NotImplementedException();
         }
 
         public string Name()

@@ -347,13 +347,13 @@ namespace IT8297Driver
         {
             public byte[] Buffer = new byte[3];
 
-            public Byte Red
+            public Byte Green
             {
                 get => Buffer.GetByte(0);
                 set => Buffer.SetByte(value, 0);
             }
 
-            public Byte Green
+            public Byte Red
             {
                 get => Buffer.GetByte(1);
                 set => Buffer.SetByte(value, 1);

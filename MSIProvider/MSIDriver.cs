@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using MadLedFrameworkSDK;
@@ -32,6 +35,14 @@ namespace MSIProvider
 
         public List<ControlDevice> GetDevices()
         {
+            Bitmap gpu;
+
+            Assembly myAssembly = Assembly.GetExecutingAssembly();
+            using (Stream myStream = myAssembly.GetManifestResourceStream("MSIProvider.msi_gpu.png"))
+            {
+                gpu = (Bitmap)Image.FromStream(myStream);
+            }
+
             List<ControlDevice> returnValue = new List<ControlDevice>();
             int tmp;
 
@@ -39,7 +50,7 @@ namespace MSIProvider
             {
                 tmp = _MsiSDK.GetDeviceInfo(out string[] deviceTypes, out int[] ledCounts);
                 
-                if (tmp != 0)
+                if (tmp != 0 && deviceTypes!=null)
                 {
 
                     for (int i = 0; i < deviceTypes.Length; i++)
@@ -66,7 +77,7 @@ namespace MSIProvider
                                     {
                                         Data = new ControlDevice.LEDData() { LEDNumber = l },
                                         Color = new LEDColor(0, 0, 0),
-                                        LEDName = "Motherboard LED " + l
+                                        LEDName = "Motherboard LED " + l,
                                     };
                                 }
 
@@ -81,7 +92,8 @@ namespace MSIProvider
                                     Name = "MSI GPU",
                                     LEDs = new ControlDevice.LedUnit[ledCount],
                                     MSIDeviceType = deviceType,
-                                    DeviceType = DeviceTypes.GPU
+                                    DeviceType = DeviceTypes.GPU,
+                                    ProductImage = gpu
                                 };
 
                                 for (int l = 0; l < ledCount; l++)
