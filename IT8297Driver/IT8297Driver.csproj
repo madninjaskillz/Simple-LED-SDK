@@ -57,6 +57,7 @@
     <Compile Include="CustomConfig.xaml.cs">
       <DependentUpon>CustomConfig.xaml</DependentUpon>
     </Compile>
+    <Compile Include="GigabyteConfigModel.cs" />
     <Compile Include="IT8297Config.cs" />
     <Compile Include="IT8297Extensions.cs" />
     <Compile Include="Models.cs" />

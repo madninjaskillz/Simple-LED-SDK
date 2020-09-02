@@ -254,13 +254,27 @@ namespace IT8297Driver
                 SupportsPush = true,
                 IsSource = false,
                 SupportsPull = false,
-                SupportsCustomConfig = true
+                SupportsCustomConfig = true,
+                Id = Guid.Parse("49440d02-8ca3-4e35-a9a3-88b024cc0e2d")
             };
         }
 
-        public UserControl GetCustomConfig()
+        public T GetConfig<T>() where T : SLSConfigData
         {
-            throw new NotImplementedException();
+            GigabyteConfigModel data = new GigabyteConfigModel();
+            SLSConfigData proxy = (SLSConfigData) data;
+            return (T)proxy;
+        }
+
+        public void PutConfig<T>(T config) where T : SLSConfigData
+        {
+            GigabyteConfigModel proxy = config as GigabyteConfigModel;
+            Debug.WriteLine(proxy);
+        }
+
+        public UserControl GetCustomConfig(ControlDevice controlDevice)
+        {
+            return new CustomConfig();
         }
 
         public string Name()

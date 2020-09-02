@@ -11,15 +11,17 @@ namespace MadLedFrameworkSDK
         void Push(ControlDevice controlDevice);
         void Pull(ControlDevice controlDevice);
         DriverProperties GetProperties();
+        T GetConfig<T>() where T : SLSConfigData;
+        void PutConfig<T>(T config) where T : SLSConfigData;
 
-        
+
 
         string Name();
     }
 
     public interface ISimpleLEDDriverWithConfig : ISimpleLEDDriver
     {
-        UserControl GetCustomConfig();
+        UserControl GetCustomConfig(ControlDevice controlDevice);
     }
 
     public class DriverProperties
@@ -28,6 +30,7 @@ namespace MadLedFrameworkSDK
         public bool SupportsPush { get; set; }
         public bool IsSource { get; set; }
         public bool SupportsCustomConfig { get; set; }
+        public Guid Id { get; set; }
     }
     
     public  class DriverDetails

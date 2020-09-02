@@ -11,6 +11,17 @@ namespace MadLedSLSDriver
     public class MadLedDriver : ISimpleLEDDriver
     {
 
+        public T GetConfig<T>() where T : SLSConfigData
+        {
+            //TODO throw new NotImplementedException();
+            return null;
+        }
+
+        public void PutConfig<T>(T config) where T : SLSConfigData
+        {
+            //TODO throw new NotImplementedException();
+        }
+
         //private MadLedSerialDriver serialDriver;
         private List<MadLedSerialDriver> serialDrivers = new List<MadLedSerialDriver>();
         public void Configure(DriverDetails driverDetails)
@@ -123,7 +134,8 @@ namespace MadLedSLSDriver
             {
                 SupportsPull = false,
                 SupportsPush = true,
-                IsSource = false
+                IsSource = false,
+                Id = Guid.Parse("79440d02-8ca3-4e35-a9a3-88b024cc0e2d")
             };
         }
 

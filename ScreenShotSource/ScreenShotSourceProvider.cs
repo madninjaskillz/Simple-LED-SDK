@@ -20,6 +20,18 @@ namespace ScreenShotSource
 {
     public class ScreenShotSourceProvider : ISimpleLEDDriver
     {
+
+        public T GetConfig<T>() where T : SLSConfigData
+        {
+            //TODO throw new NotImplementedException();
+            return null;
+        }
+
+        public void PutConfig<T>(T config) where T : SLSConfigData
+        {
+            //TODO throw new NotImplementedException();
+        }
+
         public static int[] RemapKeyboard = new int[122];
         private void Remappy()
         {
@@ -392,7 +404,8 @@ namespace ScreenShotSource
             {
                 SupportsPull = true,
                 SupportsPush = false,
-                IsSource = true
+                IsSource = true,
+                Id = Guid.Parse("99440d02-8ca3-4e35-a9a3-88b024cc0e2d")
             };
         }
 
