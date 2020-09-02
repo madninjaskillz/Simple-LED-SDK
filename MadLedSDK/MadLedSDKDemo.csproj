@@ -74,6 +74,10 @@
       <Project>{a7382bf4-6f4e-4a39-a400-716064db3cf0}</Project>
       <Name>MSIProvider</Name>
     </ProjectReference>
+    <ProjectReference Include="..\RainbowWave\RainbowWave.csproj">
+      <Project>{28F86E3C-9F50-4F2F-8486-1FB906990C25}</Project>
+      <Name>RainbowWave</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ScreenShotSource\ScreenShotSource.csproj">
       <Project>{1147B007-13A8-487F-9A2C-8A65A1CBA357}</Project>
       <Name>ScreenShotSource</Name>

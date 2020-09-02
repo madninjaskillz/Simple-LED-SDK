@@ -12,6 +12,7 @@ using IT8297Driver;
 using MadLedFrameworkSDK;
 using MadLedSLSDriver;
 using MSIProvider;
+using RainbowWave;
 using ScreenShotSource;
 using SimpleRGBCycleProvider;
 using SteelSeriesSLSProvider;
@@ -31,6 +32,7 @@ namespace MadLedSDK
             }
 
             SLSManager ledManager = new SLSManager("SLSConfigs");
+            ledManager.Drivers.Add(new RainbowWaveDriver());
             ledManager.Drivers.Add(new IT8296Provider());
             //ledManager.Drivers.Add(new SteelSeriesDriver());
             ledManager.Drivers.Add(new SimpleRGBCycleDriver());
