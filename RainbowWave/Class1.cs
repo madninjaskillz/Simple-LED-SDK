@@ -42,7 +42,9 @@ namespace RainbowWave
 
 		// Token: 0x06000002 RID: 2 RVA: 0x000020E0 File Offset: 0x000002E0
 		private void TimerCallback(object state)
-		{
+        {
+            int speedyValueThingmeBob = configModel.Speed;
+
 			LEDColor ledcolor = LEDColor.FromHSL(105, 100, 100);
 			for (int i = 0; i < 20; i++)
 			{
@@ -123,8 +125,8 @@ namespace RainbowWave
         }
 
 		public T GetConfig<T>() where T : SLSConfigData
-		{
-			RainbowWaveConfigModel data = new RainbowWaveConfigModel();
+        {
+            RainbowWaveConfigModel data = this.configModel;
 			SLSConfigData proxy = data;
 			return (T)proxy;
 		}
