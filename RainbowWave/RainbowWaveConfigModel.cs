@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MadLedFrameworkSDK;
+using Newtonsoft.Json;
 
 
 namespace RainbowWave
@@ -23,6 +24,7 @@ namespace RainbowWave
 
         private ControlDevice controlDevice;
 
+        [JsonIgnore]
         public ControlDevice CurrentControlDevice
         {
             get => controlDevice; 
