@@ -33,6 +33,7 @@ namespace MadLedSDK
 
             SLSManager ledManager = new SLSManager("SLSConfigs");
             ledManager.Drivers.Add(new RainbowWaveDriver());
+            ledManager.Drivers.Add(new MadMetersProvider.MadMetersProvider());
             ledManager.Drivers.Add(new IT8296Provider());
             //ledManager.Drivers.Add(new SteelSeriesDriver());
             ledManager.Drivers.Add(new SimpleRGBCycleDriver());
@@ -50,6 +51,7 @@ namespace MadLedSDK
             {
                 Console.WriteLine(ct + ": " + controlDevice.Driver.Name() + "-" + controlDevice.Name + " - " + controlDevice.DeviceType + ", " + controlDevice.LEDs?.Length + " LEDs");
                 driv.Add(ct, controlDevice);
+
                 ct++;
             }
 

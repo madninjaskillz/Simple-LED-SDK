@@ -31,6 +31,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CorsairH100iProvider", "Cor
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RainbowWave", "RainbowWave\RainbowWave.csproj", "{28F86E3C-9F50-4F2F-8486-1FB906990C25}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MadMetersProvider", "MadMetersProvider\MadMetersProvider.csproj", "{3ECA11BB-F881-4BB1-AC62-B7A4319888F3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -85,6 +87,10 @@ Global
 		{28F86E3C-9F50-4F2F-8486-1FB906990C25}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{28F86E3C-9F50-4F2F-8486-1FB906990C25}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{28F86E3C-9F50-4F2F-8486-1FB906990C25}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3ECA11BB-F881-4BB1-AC62-B7A4319888F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3ECA11BB-F881-4BB1-AC62-B7A4319888F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3ECA11BB-F881-4BB1-AC62-B7A4319888F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3ECA11BB-F881-4BB1-AC62-B7A4319888F3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -101,6 +107,7 @@ Global
 		{20ED218B-964F-4C44-A4C1-2A5978FA7C3C} = {94291A32-34A9-4545-93E4-A8AD25C19DEE}
 		{50515802-6FB8-44D1-A414-DD6FE7C479A0} = {94291A32-34A9-4545-93E4-A8AD25C19DEE}
 		{28F86E3C-9F50-4F2F-8486-1FB906990C25} = {94291A32-34A9-4545-93E4-A8AD25C19DEE}
+		{3ECA11BB-F881-4BB1-AC62-B7A4319888F3} = {94291A32-34A9-4545-93E4-A8AD25C19DEE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {13AEE829-92AB-4F9F-84BA-36654FF44E5B}

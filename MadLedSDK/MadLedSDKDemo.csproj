@@ -70,6 +70,10 @@
       <Project>{24BA8183-4F39-4B48-8A77-A4B747B3AC44}</Project>
       <Name>MadLedSLSDriver</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MadMetersProvider\MadMetersProvider.csproj">
+      <Project>{3ECA11BB-F881-4BB1-AC62-B7A4319888F3}</Project>
+      <Name>MadMetersProvider</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MSIProvider\MSIProvider.csproj">
       <Project>{a7382bf4-6f4e-4a39-a400-716064db3cf0}</Project>
       <Name>MSIProvider</Name>
