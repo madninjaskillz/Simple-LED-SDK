@@ -54,14 +54,32 @@ namespace MadMetersProvider
 
         }
 
+        private float cpu = 0;
+        private float cpulerp = 0;
+        DateTime lastRun=DateTime.MinValue;
         public void Pull(ControlDevice controlDevice)
         {
-            float cpu = cpuCounter.NextValue();
-            float cpupoop = (cpu / 100f);
+            if ((DateTime.Now - lastRun).TotalMilliseconds > 200)
+            {
+                cpu = cpuCounter.NextValue();
+                lastRun = DateTime.Now;
+            }
+
+            if (cpulerp < cpu)
+            {
+                cpulerp = cpulerp + ((cpu - cpulerp) * 0.2f);
+            }
+
+            if (cpulerp > cpu)
+            {
+                cpulerp = cpulerp - ((cpulerp - cpu) * 0.2f);
+            }
+
+            float cpupoop = (cpulerp / 100f);
             int idx = (int)(cpupoop * 15);
 
             
-            for (int i = 0; i < idx && i < 15; i++)
+            for (int i = 0; i < 15; i++)
             {
                 if (i < idx)
                 {
