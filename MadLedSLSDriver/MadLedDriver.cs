@@ -2,13 +2,15 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using MadLedFrameworkSDK;
 
 namespace MadLedSLSDriver
 {
-    public class MadLedDriver : ISimpleLEDDriver
+    public class MadLedDriver : ISimpleLEDDriverWithConfig
     {
 
         public T GetConfig<T>() where T : SLSConfigData
@@ -80,7 +82,8 @@ namespace MadLedSLSDriver
                             Pin = bank,
                             Driver = this,
                             SerialDriver = madLedSerialDriver,
-                            DeviceType = DeviceTypes.Fan
+                            DeviceType = DeviceTypes.Fan,
+                            ProductImage = Assembly.GetExecutingAssembly().GetEmbeddedImage("MadLedSLSDriver.madLedImage.png")
 
                         };
 
@@ -135,7 +138,13 @@ namespace MadLedSLSDriver
                 SupportsPull = false,
                 SupportsPush = true,
                 IsSource = false,
-                Id = Guid.Parse("79440d02-8ca3-4e35-a9a3-88b024cc0e2d")
+                Id = Guid.Parse("79440d02-8ca3-4e35-a9a3-88b024cc0e2d"),
+                Author = "Mad Ninja",
+                CurrentVersion = new ReleaseNumber(3,0,0,0),
+                GitHubLink = "https://github.com/madninjaskillz/MadLed",
+                Blurb = "Simple LED control for multiple 3 pin RGB fans based on WS281X for ESP8266 boards",
+                IsPublicRelease = false,
+                SupportsCustomConfig = true
             };
         }
 
@@ -150,6 +159,21 @@ namespace MadLedSLSDriver
             {
                 serialDriver?.Dispose();
             }
+        }
+
+        public UserControl GetCustomConfig(ControlDevice controlDevice)
+        {
+            return null;
+        }
+
+        public bool GetIsDirty()
+        {
+            return false;
+        }
+
+        public void SetIsDirty(bool val)
+        {
+            
         }
     }
 }

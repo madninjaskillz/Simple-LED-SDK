@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -33,6 +36,15 @@ namespace MadLedFrameworkSDK
                 return new LEDColor( v, p, q);
         }
 
-       
+        public static Bitmap GetEmbeddedImage(this Assembly myAssembly,string path)
+        {
+            using (Stream myStream = myAssembly.GetManifestResourceStream(path))
+            {
+                return (Bitmap)Image.FromStream(myStream);
+            }
+
+        }
+
+
     }
 }

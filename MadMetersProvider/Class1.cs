@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using MadLedFrameworkSDK;
@@ -43,7 +44,8 @@ namespace MadMetersProvider
                     LEDs = leds,
                     DeviceType = DeviceTypes.Effect,
                     Name = "CPU Usage",
-                    Driver = this
+                    Driver = this,
+                    ProductImage = Assembly.GetExecutingAssembly().GetEmbeddedImage("MadMetersProvider.madmeter.png")
 
                 }
             };

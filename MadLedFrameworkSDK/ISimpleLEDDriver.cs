@@ -33,6 +33,14 @@ namespace MadLedFrameworkSDK
         public bool IsSource { get; set; }
         public bool SupportsCustomConfig { get; set; }
         public Guid Id { get; set; }
+        
+        public string Author { get; set; }
+        
+        public ReleaseNumber CurrentVersion { get; set; } 
+        public string Blurb { get; set; }
+        public string GitHubLink { get; set; }
+        public string HomePage { get; set; }
+        public bool IsPublicRelease { get; set; }
     }
     
     public  class DriverDetails

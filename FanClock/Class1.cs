@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -85,7 +86,8 @@ namespace FanClock
                     Name = "Fan Clock",
                     Driver = this,
                     LEDs = leds,
-                    DeviceType = DeviceTypes.Effect
+                    DeviceType = DeviceTypes.Effect,
+                    ProductImage = Assembly.GetExecutingAssembly().GetEmbeddedImage("FanClock.clock.png")
                 },
                 
             };
@@ -109,7 +111,12 @@ namespace FanClock
                 SupportsPull = false,
                 SupportsPush = false,
                 IsSource = true,
-                Id = Guid.Parse("69440d02-8ca3-4e35-a9a3-88b024cc0e2d")
+                Id = Guid.Parse("69440d02-8ca3-4e35-a9a3-88b024cc0e2d"),
+                Author = "Mad Ninja",
+                Blurb = "Use your RGB Fans as an interesting analog clock",
+                IsPublicRelease = false,
+                CurrentVersion = new ReleaseNumber(0,0,0,1),
+                SupportsCustomConfig = false
             };
         }
 
