@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace MadLedFrameworkSDK
+namespace SimpleLed
 {
     public class LEDColor
     {
@@ -24,9 +20,9 @@ namespace MadLedFrameworkSDK
             if (Green < 0) Green = 0;
             if (Blue < 0) Blue = 0;
 
-            if (Red >255) Red = 255;
-            if (Green >255) Green = 255;
-            if (Blue >255) Blue = 255;
+            if (Red > 255) Red = 255;
+            if (Green > 255) Green = 255;
+            if (Blue > 255) Blue = 255;
         }
 
         public LEDColor(System.Drawing.Color color)
@@ -85,16 +81,16 @@ namespace MadLedFrameworkSDK
             return HlsToRgb((double)h, s / 100d, l / 200d);
         }
 
-    
 
-        private static RGB GetRGBFromHSLWithChroma(double hue,double s,double l)
+
+        private static RGB GetRGBFromHSLWithChroma(double hue, double s, double l)
         {
             double min, max, h;
 
             h = hue / 360d;
 
-            max = l < 0.5d ? l * (1 +s) : (l + s) - (l* s);
-            min = (l* 2d) - max;
+            max = l < 0.5d ? l * (1 + s) : (l + s) - (l * s);
+            min = (l * 2d) - max;
 
             RGB rgb = new RGB();
             rgb.R = ComponentFromHue(min, max, h + (1d / 3d));
@@ -119,7 +115,7 @@ namespace MadLedFrameworkSDK
         }
 
         // Convert an HLS value into an RGB value.
-        private static LEDColor HlsToRgb(double h,  double s, double l)
+        private static LEDColor HlsToRgb(double h, double s, double l)
         {
             RGB rgb = new RGB();
 
@@ -145,7 +141,7 @@ namespace MadLedFrameworkSDK
             int r = (int)Math.Round(R * 255d);
             int g = (int)Math.Round(G * 255d);
             int b = (int)Math.Round(B * 255d);
-            return new LEDColor( r, g, b);
+            return new LEDColor(r, g, b);
         }
     }
 }

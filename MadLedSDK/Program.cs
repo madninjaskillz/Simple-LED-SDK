@@ -34,13 +34,15 @@ namespace MadLedSDK
             SLSManager ledManager = new SLSManager("SLSConfigs");
             ledManager.Drivers.Add(new RainbowWaveDriver());
             ledManager.Drivers.Add(new MadMetersProvider.MadMetersProvider());
+            ledManager.Drivers.Add(new FanClockDriver());
             ledManager.Drivers.Add(new IT8296Provider());
             //ledManager.Drivers.Add(new SteelSeriesDriver());
             ledManager.Drivers.Add(new SimpleRGBCycleDriver());
-            ledManager.Drivers.Add(new MadLedDriver());
+            //ledManager.Drivers.Add(new MadLedDriver());
             //ledManager.Drivers.Add(new MSIDriver());
             ledManager.Drivers.Add(new ScreenShotSourceProvider());
             //ledManager.Drivers.Add(new CUEDriver());
+            ledManager.Drivers.Add(new AMDWraithDriver.AMDWraithDriver());
             ledManager.Init();
             Console.WriteLine("Getting devices");
             List<ControlDevice> devices = ledManager.GetDevices();
@@ -49,7 +51,7 @@ namespace MadLedSDK
             int ct = 1;
             foreach (var controlDevice in devices)
             {
-                Console.WriteLine(ct + ": " + controlDevice.Driver.Name() + "-" + controlDevice.Name + " - " + controlDevice.DeviceType + ", " + controlDevice.LEDs?.Length + " LEDs");
+                Console.WriteLine(ct + ": " + controlDevice.Driver.Name() + "-" + controlDevice.Name + " - " + controlDevice.DeviceType + ", " + controlDevice.Driver.GetProperties().Author);
                 driv.Add(ct, controlDevice);
 
                 ct++;

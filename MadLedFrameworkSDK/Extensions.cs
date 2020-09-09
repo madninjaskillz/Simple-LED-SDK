@@ -1,17 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace MadLedFrameworkSDK
+namespace SimpleLed
 {
     public static class Extensions
     {
-        public static LEDColor ColorFromHSV(double hue,double saturation, double value)
+        public static LEDColor ColorFromHSV(double hue, double saturation, double value)
         {
             int hi = Convert.ToInt32(Math.Floor(hue / 60)) % 6;
             double f = hue / 60 - Math.Floor(hue / 60);
@@ -23,20 +19,20 @@ namespace MadLedFrameworkSDK
             int t = Convert.ToInt32(value * (1 - (1 - f) * saturation));
 
             if (hi == 0)
-                return new LEDColor( v, t, p);
+                return new LEDColor(v, t, p);
             else if (hi == 1)
-                return new LEDColor( q, v, p);
+                return new LEDColor(q, v, p);
             else if (hi == 2)
-                return new LEDColor( p, v, t);
+                return new LEDColor(p, v, t);
             else if (hi == 3)
-                return new LEDColor( p, q, v);
+                return new LEDColor(p, q, v);
             else if (hi == 4)
-                return new LEDColor( t, p, v);
+                return new LEDColor(t, p, v);
             else
-                return new LEDColor( v, p, q);
+                return new LEDColor(v, p, q);
         }
 
-        public static Bitmap GetEmbeddedImage(this Assembly myAssembly,string path)
+        public static Bitmap GetEmbeddedImage(this Assembly myAssembly, string path)
         {
             using (Stream myStream = myAssembly.GetManifestResourceStream(path))
             {

@@ -7,8 +7,8 @@
     <ProjectGuid>{EB4729F4-0BF6-41D3-9548-F8C7846A2025}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MadLedFrameworkSDK</RootNamespace>
-    <AssemblyName>SLSInterface</AssemblyName>
+    <RootNamespace>SimpleLed</RootNamespace>
+    <AssemblyName>SimpleLed</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -49,7 +49,7 @@
     <Compile Include="BaseViewModel.cs" />
     <Compile Include="DeviceTypes.cs" />
     <Compile Include="Extensions.cs" />
-    <Compile Include="ISimpleLEDDriver.cs" />
+    <Compile Include="ISimpleLed.cs" />
     <Compile Include="ControlDevice.cs" />
     <Compile Include="LEDColor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

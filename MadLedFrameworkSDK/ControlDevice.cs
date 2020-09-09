@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Drawing;
 
-namespace MadLedFrameworkSDK
+namespace SimpleLed
 {
     public class ControlDevice
     {
         public string Name { get; set; }
         public string DeviceType { get; set; }
-        public ISimpleLEDDriver Driver { get; set; }
+        public ISimpleLed Driver { get; set; }
         public LedUnit[] LEDs { get; set; }
         public int LedShift { get; set; } = 0;
         public bool Reverse { get; set; } = false;
@@ -46,7 +41,7 @@ namespace MadLedFrameworkSDK
         public int MapIndex(int index)
         {
             int result = (index + LedShift) % LEDs.Length;
-            if (Reverse) result = (LEDs.Length-1) - result;
+            if (Reverse) result = (LEDs.Length - 1) - result;
 
             return result;
         }
@@ -59,7 +54,7 @@ namespace MadLedFrameworkSDK
         public class LedUnit
         {
             public string LEDName { get; set; }
-            public LEDColor Color { get; set; } = new LEDColor(0,0,0);
+            public LEDColor Color { get; set; } = new LEDColor(0, 0, 0);
             public LEDData Data { get; set; }
 
             public override string ToString()
@@ -73,7 +68,7 @@ namespace MadLedFrameworkSDK
         {
             public int LEDNumber { get; set; }
         }
-        
+
 
         public void Push()
         {
@@ -92,5 +87,5 @@ namespace MadLedFrameworkSDK
         }
     }
 
-   
+
 }

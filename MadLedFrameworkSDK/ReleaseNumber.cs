@@ -1,5 +1,4 @@
 ﻿using System;
-
 public class ReleaseNumberComponent
 {
     public int Value { get; set; }

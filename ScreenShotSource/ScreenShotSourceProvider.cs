@@ -314,6 +314,8 @@ namespace ScreenShotSource
             {
                 int screenWidth = Screen.PrimaryScreen.Bounds.Width;
                 int screenHeight = Screen.PrimaryScreen.Bounds.Height;
+                if (screenWidth > 1920) screenWidth = 1920;
+                if (screenHeight > 1080) screenHeight = 1080;
 
                 var _screenshot = new Bitmap(screenWidth, screenHeight);
 

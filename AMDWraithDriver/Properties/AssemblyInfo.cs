@@ -1,14 +1,15 @@
 ﻿using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("MadLedFrameworkSDK")]
+[assembly: AssemblyTitle("AMDWraithDriver")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("MadLedFrameworkSDK")]
+[assembly: AssemblyProduct("AMDWraithDriver")]
 [assembly: AssemblyCopyright("Copyright ©  2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -19,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("eb4729f4-0bf6-41d3-9548-f8c7846a2025")]
+[assembly: Guid("4b44f329-6a90-4384-9095-82f665cfbf9d")]
 
 // Version information for an assembly consists of the following four values:
 //

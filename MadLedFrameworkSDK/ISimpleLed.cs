@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Windows.Controls;
 
-namespace MadLedFrameworkSDK
+namespace SimpleLed
 {
-    public interface ISimpleLEDDriver : IDisposable
+    public interface ISimpleLed : IDisposable
     {
         void Configure(DriverDetails driverDetails);
         List<ControlDevice> GetDevices();
@@ -19,7 +19,7 @@ namespace MadLedFrameworkSDK
         string Name();
     }
 
-    public interface ISimpleLEDDriverWithConfig : ISimpleLEDDriver
+    public interface ISimpleLedWithConfig : ISimpleLed
     {
         UserControl GetCustomConfig(ControlDevice controlDevice);
         bool GetIsDirty();
@@ -33,24 +33,24 @@ namespace MadLedFrameworkSDK
         public bool IsSource { get; set; }
         public bool SupportsCustomConfig { get; set; }
         public Guid Id { get; set; }
-        
+
         public string Author { get; set; }
-        
-        public ReleaseNumber CurrentVersion { get; set; } 
+
+        public ReleaseNumber CurrentVersion { get; set; }
         public string Blurb { get; set; }
         public string GitHubLink { get; set; }
         public string HomePage { get; set; }
         public bool IsPublicRelease { get; set; }
     }
-    
-    public  class DriverDetails
+
+    public class DriverDetails
     {
-        
-    public string Name { get; set; }
+
+        public string Name { get; set; }
         public virtual string Platform { get; } = "Unknown";
     }
 
-    public class MadLedDriverDetails: DriverDetails
+    public class MadLedDriverDetails : DriverDetails
     {
         public override string Platform { get; } = "MadLed";
         public string ComPort { get; set; }

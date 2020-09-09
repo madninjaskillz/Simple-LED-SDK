@@ -1,18 +1,16 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
 
-namespace MadLedFrameworkSDK
+namespace SimpleLed
 {
     public class SLSManager
     {
         private string configPath;
-        public List<ISimpleLEDDriver> Drivers = new List<ISimpleLEDDriver>();
+        public List<ISimpleLed> Drivers = new List<ISimpleLed>();
 
         public SLSManager(string cfgPath)
         {
@@ -51,7 +49,7 @@ namespace MadLedFrameworkSDK
 
         public void LoadConfigs()
         {
-            foreach (ISimpleLEDDriverWithConfig simpleLedDriver in Drivers.OfType<ISimpleLEDDriverWithConfig>())
+            foreach (ISimpleLedWithConfig simpleLedDriver in Drivers.OfType<ISimpleLedWithConfig>())
             {
                 LoadConfig(simpleLedDriver);
             }
@@ -59,15 +57,15 @@ namespace MadLedFrameworkSDK
 
         public void SaveConfigs()
         {
-            foreach (ISimpleLEDDriverWithConfig simpleLedDriver in Drivers.OfType<ISimpleLEDDriverWithConfig>())
+            foreach (ISimpleLedWithConfig simpleLedDriver in Drivers.OfType<ISimpleLedWithConfig>())
             {
                 SaveConfig(simpleLedDriver);
             }
         }
 
-        public void LoadConfig(ISimpleLEDDriverWithConfig simpleLedDriver)
+        public void LoadConfig(ISimpleLedWithConfig simpleLed)
         {
-            string path = configPath + "\\" + simpleLedDriver.GetProperties().Id + "_config.json";
+            string path = configPath + "\\" + simpleLed.GetProperties().Id + "_config.json";
             string json = File.ReadAllText(path);
             SLSConfigData data = JsonConvert.DeserializeObject<SLSConfigData>(json, new JsonSerializerSettings
             {
@@ -75,20 +73,20 @@ namespace MadLedFrameworkSDK
                 // $type no longer needs to be first
                 MetadataPropertyHandling = MetadataPropertyHandling.ReadAhead
             });
-            simpleLedDriver.PutConfig(data);
+            simpleLed.PutConfig(data);
         }
 
-        public void SaveConfig(ISimpleLEDDriverWithConfig simpleLedDriver)
+        public void SaveConfig(ISimpleLedWithConfig simpleLed)
         {
-            simpleLedDriver.SetIsDirty(false);
-            SLSConfigData data = simpleLedDriver.GetConfig<SLSConfigData>();
+            simpleLed.SetIsDirty(false);
+            SLSConfigData data = simpleLed.GetConfig<SLSConfigData>();
             string json = JsonConvert.SerializeObject(data, new JsonSerializerSettings
             {
                 TypeNameHandling = TypeNameHandling.All,
                 // $type no longer needs to be first
                 MetadataPropertyHandling = MetadataPropertyHandling.ReadAhead
             });
-            string path = configPath + "\\" + simpleLedDriver.GetProperties().Id + "_config.json";
+            string path = configPath + "\\" + simpleLed.GetProperties().Id + "_config.json";
             File.WriteAllText(path, json);
         }
 

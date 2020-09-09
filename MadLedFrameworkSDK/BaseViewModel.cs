@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace MadLedFrameworkSDK
+namespace SimpleLed
 {
     /// <inheritdoc />
     /// <summary>
