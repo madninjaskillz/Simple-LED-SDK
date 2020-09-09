@@ -2,16 +2,19 @@
 <package >
   <metadata>
     <id>$id$</id>
-    <version>$version$</version>
-    <title>$title$</title>
-    <authors>$author$</authors>
+    <version>1.0</version>
+    <title>SimpleLed</title>
+    <authors>James Johnston</authors>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <license type="expression">MIT</license>
     <projectUrl>https://github.com/madninjaskillz/Simple-LED-SDK</projectUrl>
-    <iconUrl>http://icon_url_here_or_delete_this_line/</iconUrl>
-    <description>$description$</description>
-    <releaseNotes>Summary of changes made in this release of the package.</releaseNotes>
+    <iconUrl>https://github.com/madninjaskillz/Simple-LED-SDK/raw/master/simpleLedLogo.png</iconUrl>
+    <description>A standardised interface for RGB devices and plugin effects used to drive them.</description>
+    <releaseNotes>Initial Release.</releaseNotes>
     <copyright>$copyright$</copyright>
-    <tags>Tag1 Tag2</tags>
+    <tags>RGB LED</tags>
+        <dependencies>
+      <group targetFramework=".NETFramework4.7.2" />
+    </dependencies>
   </metadata>
 </package>
