@@ -3,11 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30323.103
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleLEDSDK", "MadLedFrameworkSDK\SimpleLEDSDK.csproj", "{EB4729F4-0BF6-41D3-9548-F8C7846A2025}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Drivers", "Drivers", "{94291A32-34A9-4545-93E4-A8AD25C19DEE}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Interface", "Interface", "{DCEC326B-68BE-4BF5-9C62-0BFBE449E66E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleLed", "SimpleLed\SimpleLed.csproj", "{EB4729F4-0BF6-41D3-9548-F8C7846A2025}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

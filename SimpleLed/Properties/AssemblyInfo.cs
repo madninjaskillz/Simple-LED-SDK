@@ -1,16 +1,15 @@
 ﻿using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("MadLedSDK")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("SimpleLed")]
+[assembly: AssemblyDescription("SDK to create interfaces to RGB hardware or create effects sources suitable for RGB devices")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("MadLedSDK")]
-[assembly: AssemblyCopyright("Copyright ©  2020")]
+[assembly: AssemblyCompany("mad ninja")]
+[assembly: AssemblyProduct("SimpleLed")]
+[assembly: AssemblyCopyright("Copyright ©James Johnston  2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -20,7 +19,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("28283822-1d5e-4b3f-89dd-97e19ad32216")]
+[assembly: Guid("eb4729f4-0bf6-41d3-9548-f8c7846a2025")]
 
 // Version information for an assembly consists of the following four values:
 //
